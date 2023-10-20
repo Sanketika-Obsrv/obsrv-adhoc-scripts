@@ -11,34 +11,33 @@
                     "type": "string",
                     "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
                 },
+                
                 "school_id": {
                     "type": "array",
                     "items": {
-                            "type": "number",
-                            "enum": [
-                                10020,
-                                10021,
-                                10023,
-                                10024,
-                                10025,
-                                10026,
-                                10027,
-                                10028,
-                                1003,
-                                10030,
-                                10031,
-                                10032,
-                                10033,
-                                10035,
-                                10036,
-                                10037,
-                                10038,
-                                10039,
-                                1004
-                            ]
-                          }
-                        
-                    
+                        "type": "number",
+                        "enum": [
+                            10020,
+                            10021,
+                            10023,
+                            10024,
+                            10025,
+                            10026,
+                            10027,
+                            10028,
+                            1003,
+                            10030,
+                            10031,
+                            10032,
+                            10033,
+                            10035,
+                            10036,
+                            10037,
+                            10038,
+                            10039,
+                            1004
+                        ]
+                    }
                 },
                 "school_category": {
                     "type": "string",
@@ -83,6 +82,17 @@
                         "15"
                     ]
                 },
+                "address": {
+                    "type": "object",
+                    "properties": {
+                      "flat": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "flat"
+                    ]
+                  },
                 "district_id": {
                     "type": "string",
                     "enum": [
@@ -104,6 +114,9 @@
                     "enum": [
                         "1"
                     ]
+                },
+                "isHavingLibrary": {
+                    "type": "boolean"
                 }
             },
             "required": [
@@ -118,12 +131,16 @@
                 "state_id",
                 "district_id",
                 "block_id",
-                "cluster_id"
+                "cluster_id",
+                "isHavingLibrary",
+                "address"
             ]
         },
         "conditions": {
             "students_marked": {
-                "<=": ["total_students"]
+                "<=": [
+                    "total_students"
+                ]
             },
             "students_present": {
                 "<": [
@@ -132,10 +149,62 @@
                 ]
             },
             "date": {
-                "format":"date",
-                "range": {
-                    "from": "",
-                    "to":""
+                "format": {
+                    "type": "date",
+                    "range": {
+                        "from": "2023-09-20T13:53:27.784Z"
+                    }
+                }
+            },
+           
+            "school_category": {
+                "occurences": {
+                    "data": [
+                        {
+                            "weight": 25,
+                            "value": "primary"
+                        },
+                        {
+                            "weight": 25,
+                            "value": "upper_primary"
+                        },
+                        {
+                            "weight": 25,
+                            "value": "secondary"
+                        },
+                        {
+                            "weight": 25,
+                            "value": "senior_secondary"
+                        }
+                    ]
+                }
+            },
+            "isHavingLibrary": {
+                "occurences": {
+                    "data": [
+                        {
+                            "weight": 70,
+                            "value": true
+                        },
+                        {
+                            "weight": 30,
+                            "value":false
+                        }
+                    ]
+                }
+            },
+            "address.flat": {
+                "occurences": {
+                    "data": [
+                        {
+                            "weight": 70,
+                            "value": 1
+                        },
+                        {
+                            "weight": 30,
+                            "value":20
+                        }
+                    ]
                 }
             }
         },

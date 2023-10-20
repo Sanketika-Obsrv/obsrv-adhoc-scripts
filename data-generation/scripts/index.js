@@ -36,18 +36,43 @@ const applyNumberConditions = (conditions, event) => {
             const maxValue = _.max(fieldsData)
             data = faker.number.int({min: maxValue})
         } 
+
+        if (condition === 'occurences' && conditions?.occurences?.data) { 
+            let occurencesData = conditions?.occurences?.data
+            occurencesData = _.map(occurencesData, (d) => {
+                return ({ weight: d?.weight/ 10, value: d?.value })
+             })
+             data = faker.helpers.weightedArrayElement(occurencesData);
+        }
     }
     return _.toNumber(data);
 }
 
 const applyStringConditions = (conditions, event) => {
+    let data;
     for (const condition in conditions) {
         if (condition === 'faker') {
             return _.toString(faker.helpers.fake(`{{${conditions.faker}}}`))
         } 
 
-        // date range
+        if(condition == 'format') {
+            const type = conditions?.format?.type;
+            if(type && _.toLower(type) === 'date') {
+                const from = conditions?.format?.range?.from || new Date(); // today
+                const to = conditions?.format?.range?.to || new Date(new Date().getTime() + 24 * 60 * 60 * 1000); // tomoor
+                data = faker.date.between({from, to}) 
+            }
+        }
+        if (condition === 'occurences' && conditions?.occurences?.data) { 
+            let occurencesData = conditions?.occurences?.data
+            occurencesData = _.map(occurencesData, (d) => {
+                return ({ weight: d?.weight/ 10, value: d?.value })
+             })
+             data = faker.helpers.weightedArrayElement(occurencesData);
+        }
     }
+    
+    return data;
 }
 
 const applyArrayConditions = (conditions, event) => {
@@ -56,29 +81,40 @@ const applyArrayConditions = (conditions, event) => {
             return _.toString(faker.helpers.fake(`{{${conditions.faker}}}`))
         } 
     }
-    // Occurences of the fileds
 }
 
 const applyBooleanConditions = (conditions, event) => {
+    let data;
     for (const condition in conditions) {
         if (condition === 'faker') {
             return _.toString(faker.helpers.fake(`{{${conditions.faker}}}`))
         } 
+        if (condition === 'occurences' && conditions?.occurences?.data) { 
+            let occurencesData = conditions?.occurences?.data
+            occurencesData = _.map(occurencesData, (d) => {
+                return ({ weight: d?.weight/ 10, value: d?.value })
+             })
+             data = faker.helpers.weightedArrayElement(occurencesData);
+        }
     }
-
-    // occurence of the true, false
+    return data;
 }
 
 const applyConditions = (conditions, event) => {
     for (const field in conditions) {
-        const data = _.get(event, field)
+        const fieldDate = _.get(event, field)
         const fieldConditions = _.get(conditions, field)
-        // console.log(field, fieldConditions)
-        if (_.isNumber(data)) {
+        if (_.isNumber(fieldDate)) {
             const data = applyNumberConditions(fieldConditions, event)
             _.set(event, field, data)
-        } else if(_.isString(data)) {
+        } else if(_.isString(fieldDate)) {
             const data = applyStringConditions(fieldConditions, event)
+            _.set(event, field, data)
+        } else if(_.isArray(fieldDate)) {
+            const data = applyArrayConditions(fieldConditions, event)
+            _.set(event, field, data)
+        } else if(_.isBoolean(fieldDate)) {
+            const data = applyBooleanConditions(fieldConditions, event)
             _.set(event, field, data)
         }
 
@@ -95,7 +131,7 @@ const applyDenorm = () => {
 }
 
 
-const start = async (templatePath, count = 10, outputPath) => {
+const start = async (templatePath, count = 100, outputPath) => {
     try {
         const writeStream = fs.createWriteStream("../output/vsk/student-attendance.json")
         let template = await fs.readJson(templatePath);
@@ -115,4 +151,4 @@ const start = async (templatePath, count = 10, outputPath) => {
 }
 
 
-start("/Users/harishkumargangula/Documents/GitHub/obsrv-samples/templates/vsk/student-attendance.json")
+start("/Users/harishkumargangula/Documents/GitHub/obsrv-adhoc-scripts/data-generation/templates/vsk/student-attendance.json")
