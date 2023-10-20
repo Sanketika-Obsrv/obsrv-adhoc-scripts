@@ -1,0 +1,19 @@
+{
+  "name": "obsrv-samples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^8.1.0",
+    "fs-extra": "^11.1.1",
+    "json-schema-faker": "^0.5.3",
+    "json-schema-generator": "^2.0.6",
+    "lodash": "^4.17.21"
+  }
+}

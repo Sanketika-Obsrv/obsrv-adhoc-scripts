@@ -1,0 +1,146 @@
+{
+    "id": "vsk-student-attendance",
+    "version": "1.0.0",
+    "name": "VSK student attendance",
+    "template": {
+        "schema": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
+                },
+                "school_id": {
+                    "type": "array",
+                    "items": {
+                            "type": "number",
+                            "enum": [
+                                10020,
+                                10021,
+                                10023,
+                                10024,
+                                10025,
+                                10026,
+                                10027,
+                                10028,
+                                1003,
+                                10030,
+                                10031,
+                                10032,
+                                10033,
+                                10035,
+                                10036,
+                                10037,
+                                10038,
+                                10039,
+                                1004
+                            ]
+                          }
+                        
+                    
+                },
+                "school_category": {
+                    "type": "string",
+                    "enum": [
+                        "primary",
+                        "upper_primary",
+                        "secondary",
+                        "senior_secondary"
+                    ]
+                },
+                "grade": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 12
+                },
+                "gender": {
+                    "type": "string",
+                    "enum": [
+                        "male",
+                        "female",
+                        "others"
+                    ]
+                },
+                "total_students": {
+                    "type": "integer",
+                    "minimum": 100,
+                    "maximum": 1500
+                },
+                "students_marked": {
+                    "type": "integer",
+                    "minimum": 100,
+                    "maximum": 1500
+                },
+                "students_present": {
+                    "type": "integer",
+                    "minimum": 100,
+                    "maximum": 1500
+                },
+                "state_id": {
+                    "type": "string",
+                    "enum": [
+                        "15"
+                    ]
+                },
+                "district_id": {
+                    "type": "string",
+                    "enum": [
+                        "2001",
+                        "2002",
+                        "2003",
+                        "2004",
+                        "2006"
+                    ]
+                },
+                "block_id": {
+                    "type": "string",
+                    "enum": [
+                        "1"
+                    ]
+                },
+                "cluster_id": {
+                    "type": "string",
+                    "enum": [
+                        "1"
+                    ]
+                }
+            },
+            "required": [
+                "date",
+                "school_id",
+                "school_category",
+                "grade",
+                "gender",
+                "total_students",
+                "students_marked",
+                "students_present",
+                "state_id",
+                "district_id",
+                "block_id",
+                "cluster_id"
+            ]
+        },
+        "conditions": {
+            "students_marked": {
+                "<=": ["total_students"]
+            },
+            "students_present": {
+                "<": [
+                    "students_marked",
+                    "total_students"
+                ]
+            },
+            "date": {
+                "format":"date",
+                "range": {
+                    "from": "",
+                    "to":""
+                }
+            }
+        },
+        "denormConfig": [
+            {}
+        ]
+    }
+}
