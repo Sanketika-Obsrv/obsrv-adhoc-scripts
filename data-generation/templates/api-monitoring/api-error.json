@@ -1,0 +1,292 @@
+{
+    "id": "api",
+    "version": "1.0.0",
+    "name": "API's data",
+    "template": {
+        "schema": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "type": "object",
+            "properties": {
+                "context": {
+                    "type": "object",
+                    "properties": {
+                        "channel": {
+                            "type": "string",
+                            "enum": [
+                                "user-auth",
+                                "user-read",
+                                "search",
+                                "select",
+                                "create",
+                                "status",
+                                "confirm",
+                                "content-read"
+                            ]
+                        },
+                        "country": {
+                            "type": "string",
+                            "enum": [
+                                "IND"
+                            ]
+                        },
+                        "city": {
+                            "type": "string",
+                            "enum": [
+                                "std:080",
+                                "std:011",
+                                "std:0120",
+                                "std:0141",
+                                "std:079",
+                                "std:044",
+                                "std:0468"
+                            ]
+                        },
+                        "endpoint": {
+                            "type": "string",
+                            "enum": [
+                                "/login",
+                                "/user/read",
+                                "/search",
+                                "/select",
+                                "/create",
+                                "/status",
+                                "/confirm",
+                                "/content/read"
+                            ]
+                        },
+                        "url": {
+                            "type": "string",
+                            "enum": [
+                                "https://exmaple-1.com/",
+                                "https://exmaple-2.com/",
+                                "https://exmaple-3.com/"
+                            ]
+                        },
+                        "timestamp": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "success",
+                                "error",
+                                "info"
+                            ]
+                        },
+                        "status_code": {
+                            "type": "string",
+                            "enum": [
+                                "422"
+                            ]
+                        },
+                        "response_time_ms": {
+                            "type": "integer",
+                            "maximum": 2000,
+                            "minimum": 10
+                        },
+                        "userId": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "res_in_bytes": {
+                            "type": "integer",
+                            "maximum": 15000,
+                            "minimum": 240
+                        },
+                        "errorCode": {
+                            "type": "string",
+                            "enum": [
+                                "10000",
+                                "10001",
+                                "10002",
+                                "20000",
+                                "20001",
+                                "20002",
+                                "20003",
+                                "20004",
+                                "20005",
+                                "20006",
+                                "20007",
+                                "20008",
+                                "20009",
+                                "21001",
+                                "21002",
+                                "21003",
+                                "22501",
+                                "22502",
+                                "22503",
+                                "22504",
+                                "22505",
+                                "22506",
+                                "22507",
+                                "22508",
+                                "23001",
+                                "23002",
+                                "25001",
+                                "27501",
+                                "27502",
+                                "30000",
+                                "30001",
+                                "30002",
+                                "30003",
+                                "30004",
+                                "30005",
+                                "30006",
+                                "30007",
+                                "30008",
+                                "30009",
+                                "30010",
+                                "30011",
+                                "30012",
+                                "30013",
+                                "30014",
+                                "30015",
+                                "30016",
+                                "30017",
+                                "30018",
+                                "30019",
+                                "30020",
+                                "30021",
+                                "30022",
+                                "30023",
+                                "31001",
+                                "31002",
+                                "31003",
+                                "40000",
+                                "40001",
+                                "40002",
+                                "40003",
+                                "40004",
+                                "40005",
+                                "40006",
+                                "40007",
+                                "40008",
+                                "40009",
+                                "41001",
+                                "50000",
+                                "50001",
+                                "50002",
+                                "50003",
+                                "50004",
+                                "50005",
+                                "50006",
+                                "60001",
+                                "60002",
+                                "60003",
+                                "60004",
+                                "60005",
+                                "60006",
+                                "60007",
+                                "60008",
+                                "60009",
+                                "60010",
+                                "60011",
+                                "60012",
+                                "61001",
+                                "62501",
+                                "62502",
+                                "62503",
+                                "62504",
+                                "62505",
+                                "62506",
+                                "62507",
+                                "62508",
+                                "62509",
+                                "62510",
+                                "62511",
+                                "63001",
+                                "63002",
+                                "64001",
+                                "64002",
+                                "65001",
+                                "65002",
+                                "65003",
+                                "65004",
+                                "66001",
+                                "66002",
+                                "66003",
+                                "66004"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "channel",
+                        "errorCode",
+                        "res_in_bytes",
+                        "userId",
+                        "response_time_ms",
+                        "status_code",
+                        "status",
+                        "timestamp",
+                        "url",
+                        "endpoint",
+                        "city",
+                        "country"
+                    ]
+                }
+            },
+            "required": [
+                "context"
+            ]
+        },
+        "conditions": {
+            "context.timestamp": {
+                "format": {
+                    "type": "date",
+                    "range": {
+                        "from": "2023-09-01T13:53:27.784Z"
+                    }
+                }
+            }
+        },
+        "denormConfig": [
+            {
+                "path": "context",
+                "values": [
+                    {
+                        "channel": "user-auth",
+                        "endpoint": "/login"
+                    },
+                    {
+                        "channel": "user-read",
+                        "endpoint": "/user/read"
+                    },
+                    {
+                        "channel": "search",
+                        "endpoint": "/search"
+                    },
+                    {
+                        "channel": "select",
+                        "endpoint": "/select"
+                    },
+                    {
+                        "channel": "create",
+                        "endpoint": "/create"
+                    },
+                    {
+                        "channel": "status",
+                        "endpoint": "/status"
+                    },
+                    {
+                        "channel": "confirm",
+                        "endpoint": "/confirm"
+                    },
+                    {
+                        "channel": "content-read",
+                        "endpoint": "/content/read"
+                    }
+                ]
+            },
+            {
+                "path": "context",
+                "values": [
+                    {
+                        "status": "info",
+                        "status_code": "422"
+                    }
+                ]
+            }
+        ]
+    }
+}
