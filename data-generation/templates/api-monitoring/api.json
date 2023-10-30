@@ -7,127 +7,119 @@
             "$schema": "http://json-schema.org/draft-04/schema#",
             "type": "object",
             "properties": {
-                "context": {
-                    "type": "object",
-                    "properties": {
-                        "channel": {
-                            "type": "string",
-                            "enum": [
-                                "user-auth",
-                                "user-read",
-                                "search",
-                                "select",
-                                "create",
-                                "status",
-                                "confirm",
-                                "content-read"
-                            ]
-                        },
-                        "country": {
-                            "type": "string",
-                            "enum": [
-                                "IND"
-                            ]
-                        },
-                        "city": {
-                            "type": "string",
-                            "enum": [
-                                "std:080",
-                                "std:011",
-                                "std:0120",
-                                "std:0141",
-                                "std:079",
-                                "std:044",
-                                "std:0468"
-                            ]
-                        },
-                        "endpoint": {
-                            "type": "string",
-                            "enum": [
-                                "/login",
-                                "/user/read",
-                                "/search",
-                                "/select",
-                                "/create",
-                                "/status",
-                                "/confirm",
-                                "/content/read"
-                            ]
-                        },
-                        "url": {
-                            "type": "string",
-                            "enum": [
-                                "https://exmaple-1.com/",
-                                "https://exmaple-2.com/",
-                                "https://exmaple-3.com/"
-                            ]
-                        },
-                        "timestamp": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "status": {
-                            "type": "string",
-                            "enum": [
-                                "success",
-                                "error",
-                                "info"
-                            ]
-                        },
-                        "status_code": {
-                            "type": "string",
-                            "enum": [
-                                "200",
-                                "201",
-                                "202",
-                                "204",
-                                "400",
-                                "401",
-                                "403",
-                                "404",
-                                "429",
-                                "500",
-                                "502",
-                                "503",
-                                "504"
-                            ]
-                        },
-                        "response_time_ms": {
-                            "type": "integer",
-                            "maximum": 2000,
-                            "minimum": 10
-                        },
-                        "userId": {
-                            "type": "string",
-                            "format": "uuid"
-                        },
-                        "res_in_bytes": {
-                            "type": "integer",
-                            "maximum": 15000,
-                            "minimum": 240
-                        }
-                    },
-                    "required": [
-                        "channel",
-                        "res_in_bytes",
-                        "userId",
-                        "response_time_ms",
-                        "status_code",
+                "channel": {
+                    "type": "string",
+                    "enum": [
+                        "user-auth",
+                        "user-read",
+                        "search",
+                        "select",
+                        "create",
                         "status",
-                        "timestamp",
-                        "url",
-                        "endpoint",
-                        "city",
-                        "country"
+                        "confirm",
+                        "content-read"
                     ]
+                },
+                "country": {
+                    "type": "string",
+                    "enum": [
+                        "IND"
+                    ]
+                },
+                "city": {
+                    "type": "string",
+                    "enum": [
+                        "std:080",
+                        "std:011",
+                        "std:0120",
+                        "std:0141",
+                        "std:079",
+                        "std:044",
+                        "std:0468"
+                    ]
+                },
+                "endpoint": {
+                    "type": "string",
+                    "enum": [
+                        "/login",
+                        "/user/read",
+                        "/search",
+                        "/select",
+                        "/create",
+                        "/status",
+                        "/confirm",
+                        "/content/read"
+                    ]
+                },
+                "url": {
+                    "type": "string",
+                    "enum": [
+                        "https://exmaple-1.com/",
+                        "https://exmaple-2.com/",
+                        "https://exmaple-3.com/"
+                    ]
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "success",
+                        "error",
+                        "info"
+                    ]
+                },
+                "status_code": {
+                    "type": "string",
+                    "enum": [
+                        "200",
+                        "201",
+                        "202",
+                        "204",
+                        "400",
+                        "401",
+                        "403",
+                        "404",
+                        "429",
+                        "500",
+                        "502",
+                        "503",
+                        "504"
+                    ]
+                },
+                "response_time_ms": {
+                    "type": "integer",
+                    "maximum": 2000,
+                    "minimum": 10
+                },
+                "userId": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "res_in_bytes": {
+                    "type": "integer",
+                    "maximum": 15000,
+                    "minimum": 240
                 }
             },
             "required": [
-                "context"
+                "channel",
+                "res_in_bytes",
+                "userId",
+                "response_time_ms",
+                "status_code",
+                "status",
+                "timestamp",
+                "url",
+                "endpoint",
+                "city",
+                "country"
             ]
         },
         "conditions": {
-            "context.timestamp": {
+            "timestamp": {
                 "format": {
                     "type": "date",
                     "range": {
@@ -138,7 +130,7 @@
         },
         "denormConfig": [
             {
-                "path": "context",
+                "path": "",
                 "values": [
                     {
                         "channel": "user-auth",
@@ -175,7 +167,7 @@
                 ]
             },
             {
-                "path": "context",
+                "path": "",
                 "values": [
                     {
                         "status": "success",

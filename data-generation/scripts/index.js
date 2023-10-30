@@ -130,19 +130,21 @@ const applyDenorm = (configs, event) => {
     let data = event
     for(const config of configs) {
         if(_.isObject(config.values[0])) {
-            let pathObject = _.get(event, config?.path)
-            if(!_.isEmpty(config.values[0]?.weight)) {
-                let values = _.map(config.values, (d) => {
-                    return ({...d, ...{ weight: d?.weight/ 10 }})
+            
+            let pathObject = _.get(event, config?.path) || data;
+            if(_.get(config, 'values[0].weight')) {
+                let values = _.map(config.values, (value) => {
+                    return ({...value, ...{ weight: value?.weight/ 10 }})
                  })
                 pathObject = {...pathObject, ...faker.helpers.weightedArrayElement(values)}
-            } else {
+            } else { 
                 pathObject = {...pathObject, ..._.sample(config.values)}
             }
-            data = _.set(data, config.path, pathObject)
+            data = config?.path ? _.set(data, config.path, pathObject) : pathObject
         } else {
             data = _.set(data, config.path, _.sample(config.values))   
         }
+        // console.log(data)
     }
     return  data;
 
