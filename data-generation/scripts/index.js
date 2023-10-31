@@ -134,7 +134,10 @@ const applyDenorm = (configs, event) => {
             let pathObject = _.get(event, config?.path) || data;
             if(_.get(config, 'values[0].weight')) {
                 let values = _.map(config.values, (value) => {
-                    return ({...value, ...{ weight: value?.weight/ 10 }})
+                    const data = {
+                        value: _.omit(value, 'weight')
+                    }
+                    return ({...data, ...{ weight: value?.weight/ 10 }})
                  })
                 pathObject = {...pathObject, ...faker.helpers.weightedArrayElement(values)}
             } else { 
