@@ -1,0 +1,22 @@
+{
+    "name": "fakerjs-demo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@faker-js/faker": "^7.6.0",
+        "async": "^3.2.4",
+        "axios": "^1.4.0",
+        "csv-writer": "1.3.0",
+        "dayjs": "^1.11.7",
+        "lodash": "^4.17.21",
+        "request": "2.88.0",
+        "uuid": "^9.0.0",
+        "kafkajs": "^2.2.4"
+    }
+}
