@@ -25,7 +25,7 @@ const makeAsyncBatchCalls = (tasks) => {
 const httpRequestClosure = (events, batchSize = globalConfig.noOfEventsPerBatch,) => {
     const eventsData = _.chunk(events, batchSize);
     const data = eventsData.map((batch) => {
-        const body = { events: uuid.v4(), id: batch }
+        const body = { id: uuid.v4(), events: batch }
         return () => sendEvent({ body }, globalConfig.pushViaApi, globalConfig.pushViaKafka);
     })
     return data;
