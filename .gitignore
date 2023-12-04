@@ -1,0 +1,5 @@
+/fraud_detection/mock-data-generator/resources/
+/fraud_detection/flink/jars/
+/fraud_detection/flink/src/*.yaml
+/fraud_detection/flink/src/*.zip
+/fraud_detection/flink/Commands.txt

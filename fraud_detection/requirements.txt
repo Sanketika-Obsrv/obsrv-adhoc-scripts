@@ -1,0 +1,6 @@
+apache-flink
+redis2
+jsonschema==4.20.0
+faker==20.1.0
+pandas
+pyspark==3.5.0
