@@ -37,11 +37,14 @@ class FraudDetector(MapFunction):
 				"isFraud": "False",
 				"description": "Profile not found"
 			}
+			event["meta"] = metadata
+			updatedValue = json.dumps(event, separators=(',', ':'))
+			return updatedValue
 		else:
 			fraud_profile = json.loads(redis_data)
 			# DT like rules:
-			# if receiver account is not active
 			try:
+				# if receiver account is not active
 				if event["receiver_account_details"]["account_status"] != "ACTIVE":
 					metadata = {
 						"fraud_processed": "True", 
@@ -49,15 +52,24 @@ class FraudDetector(MapFunction):
 						"severity": "Severe",
 						"description": "Receiver is a suspected mule account."
 					}
-					# If txn amount is higher than the net spend across 3 months
+					event["meta"] = metadata
+					self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+					updatedValue = json.dumps(event, separators=(',', ':'))
+					return updatedValue
+				# If txn amount is higher than the net spend across 3 months
 				elif event["txn_amount"] >= fraud_profile["net_amount_spent"]:
-					if (datetime.now() - fraud_profile["latest_txn_date"]).days > 30:
+					latest_txn_date = datetime.fromisoformat(fraud_profile["latest_txn_date"])
+					if (datetime.now(latest_txn_date.tzinfo) - latest_txn_date).days > 20:
 						metadata = {
 							"fraud_processed": "True", 
 							"isFraud": "True",
 							"severity": "Severe",
 							"description": "High spend from an dormant amount."
 						}
+						event["meta"] = metadata
+						self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+						updatedValue = json.dumps(event, separators=(',', ':'))
+						return updatedValue
 					else:
 						metadata = {
 							"fraud_processed": "True", 
@@ -65,6 +77,10 @@ class FraudDetector(MapFunction):
 							"severity": "Severe",
 							"description": "Transaction amount higher than net spend."
 						}
+						event["meta"] = metadata
+						self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+						updatedValue = json.dumps(event, separators=(',', ':'))
+						return updatedValue
 				# if txn amount is higher than 3 std dev of daily avg amount
 				elif event["txn_amount"] >= ((3 * fraud_profile["std_dev_net_amount_spent"]) + fraud_profile["daily_avg_amount_spent"]):
 					metadata = {
@@ -73,45 +89,61 @@ class FraudDetector(MapFunction):
 						"severity": "Medium",
 						"description": "Transaction amount considerably higher than daily average spend."
 					}
+					event["meta"] = metadata
+					self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+					updatedValue = json.dumps(event, separators=(',', ':'))
+					return updatedValue
 				# If daily avg cashflow is close to 0
-				elif (fraud_profile["daily_avg_cashflow"] > 10000) and (fraud_profile["daily_avg_cashflow"] < -10000):
+				elif (fraud_profile["daily_avg_cashflow"] > 100000) and (fraud_profile["daily_avg_cashflow"] < -100000):
 					metadata = {
 						"fraud_processed": "True", 
 						"isFraud": "True",
 						"severity": "Medium",
 						"description": "High transactions yet low cashflow."
 					}
+					event["meta"] = metadata
+					self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+					updatedValue = json.dumps(event, separators=(',', ':'))
+					return updatedValue
 				# If daily avg transaction count is high
-				elif fraud_profile["daily_avg_transactions"] > 50:
+				elif fraud_profile["daily_avg_transactions"] > 1:
 					metadata = {
 						"fraud_processed": "True", 
 						"isFraud": "True",
 						"severity": "Low",
 						"description": "High daily avg transactions."
 					}
+					event["meta"] = metadata
+					self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+					updatedValue = json.dumps(event, separators=(',', ':'))
+					return updatedValue
 			except KeyError:
 				metadata = {
 					"fraud_processed": "False", 
 					"isFraud": "False",
 					"description": "metric unavailable."
 				}
+				event["meta"] = metadata
+				updatedValue = json.dumps(event, separators=(',', ':'))
+				return updatedValue
 			except TypeError:
 				metadata = {
 					"fraud_processed": "False", 
 					"isFraud": "False",
 					"description": "metric unavailable."
 				}
+				event["meta"] = metadata
+				updatedValue = json.dumps(event, separators=(',', ':'))
+				return updatedValue
 		# None of rules satisifed, hence not a fraud
 			else:
 				metadata = {
 					"fraud_processed": "True", 
 					"isFraud": "False"
 				}
-		event["meta"] = metadata
-		if metadata["isFraud"] == "True":
-			self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
-		updatedValue = json.dumps(event, separators=(',', ':'))
-		return updatedValue
+				event["meta"] = metadata
+				updatedValue = json.dumps(event, separators=(',', ':'))
+				return updatedValue
 
 	def close(self):
 		return super().close()
