@@ -53,7 +53,13 @@ class FraudDetector(MapFunction):
 						"description": "Receiver is a suspected mule account."
 					}
 					event["meta"] = metadata
-					self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+					self.ctx.add_group(
+						"dataset_id", conf["kafka"]["source_topic"]
+					).add_group(
+						"txn_type", "fraud_txn"
+					).add_group(
+						"txn_id",event["txn_id"]
+					).counter("txn_count").inc(1)
 					updatedValue = json.dumps(event, separators=(',', ':'))
 					return updatedValue
 				# If txn amount is higher than the net spend across 3 months
@@ -67,7 +73,13 @@ class FraudDetector(MapFunction):
 							"description": "High spend from an dormant amount."
 						}
 						event["meta"] = metadata
-						self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+						self.ctx.add_group(
+						"dataset_id", conf["kafka"]["source_topic"]
+					).add_group(
+						"txn_type", "fraud_txn"
+					).add_group(
+						"txn_id",event["txn_id"]
+					).counter("txn_count").inc(1)
 						updatedValue = json.dumps(event, separators=(',', ':'))
 						return updatedValue
 					else:
@@ -78,7 +90,13 @@ class FraudDetector(MapFunction):
 							"description": "Transaction amount higher than net spend."
 						}
 						event["meta"] = metadata
-						self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+						self.ctx.add_group(
+						"dataset_id", conf["kafka"]["source_topic"]
+					).add_group(
+						"txn_type", "fraud_txn"
+					).add_group(
+						"txn_id",event["txn_id"]
+					).counter("txn_count").inc(1)
 						updatedValue = json.dumps(event, separators=(',', ':'))
 						return updatedValue
 				# if txn amount is higher than 3 std dev of daily avg amount
@@ -90,7 +108,13 @@ class FraudDetector(MapFunction):
 						"description": "Transaction amount considerably higher than daily average spend."
 					}
 					event["meta"] = metadata
-					self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+					self.ctx.add_group(
+						"dataset_id", conf["kafka"]["source_topic"]
+					).add_group(
+						"txn_type", "fraud_txn"
+					).add_group(
+						"txn_id",event["txn_id"]
+					).counter("txn_count").inc(1)
 					updatedValue = json.dumps(event, separators=(',', ':'))
 					return updatedValue
 				# If daily avg cashflow is close to 0
@@ -102,7 +126,13 @@ class FraudDetector(MapFunction):
 						"description": "High transactions yet low cashflow."
 					}
 					event["meta"] = metadata
-					self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+					self.ctx.add_group(
+						"dataset_id", conf["kafka"]["source_topic"]
+					).add_group(
+						"txn_type", "fraud_txn"
+					).add_group(
+						"txn_id",event["txn_id"]
+					).counter("txn_count").inc(1)
 					updatedValue = json.dumps(event, separators=(',', ':'))
 					return updatedValue
 				# If daily avg transaction count is high
@@ -114,7 +144,13 @@ class FraudDetector(MapFunction):
 						"description": "High daily avg transactions."
 					}
 					event["meta"] = metadata
-					self.ctx.add_group("txn_type", "fraud_txn").add_group("txn_id",event["txn_id"]).counter("txn_count").inc(1)
+					self.ctx.add_group(
+						"dataset_id", conf["kafka"]["source_topic"]
+					).add_group(
+						"txn_type", "fraud_txn"
+					).add_group(
+						"txn_id",event["txn_id"]
+					).counter("txn_count").inc(1)
 					updatedValue = json.dumps(event, separators=(',', ':'))
 					return updatedValue
 			except KeyError:
