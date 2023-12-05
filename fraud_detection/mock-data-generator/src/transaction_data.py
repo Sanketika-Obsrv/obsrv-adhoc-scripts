@@ -158,8 +158,8 @@ def write_events_to_output(events, output_file):
     
 if __name__ == '__main__':
     parser = ArgumentParser('Mock Data Generator')
-    parser.add_argument('-c', '--config_file', default='../data/transaction_schema.json', help='Specify a config file to use')
-    parser.add_argument('-o', '--output_file', default='../sample-files/transaction_data.json', help='Specify the name of the output file')
+    parser.add_argument('-c', '--config_file', required=True, help='Specify a config file to use')
+    parser.add_argument('-o', '--output_file', required=True, help='Specify the name of the output file')
     parser.add_argument('-n', '--event_count', type=int, default=1, help='Specify the number of events')
     args = parser.parse_args()
     file = open(args.config_file)
