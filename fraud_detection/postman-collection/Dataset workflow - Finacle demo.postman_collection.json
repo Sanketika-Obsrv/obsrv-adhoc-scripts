@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "d727cb28-2c5a-4ab6-9347-46d87ae934c6",
+		"name": "Dataset workflow - Finacle demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23908122"
+	},
+	"item": [
+		{
+			"name": "Bank Profile Dataset",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"bank_profile_dec\",\n    \"dataset_id\": \"bank_profile_dec\",\n    \"version\": 1,\n    \"type\": \"master-dataset\",\n    \"name\": \"bank_profile_dec\",\n    \"validation_config\": {\n        \"validate\": true,\n        \"mode\": \"Strict\"\n    },\n    \"extraction_config\": {\n        \"is_batch_event\": true,\n        \"extraction_key\": \"events\",\n        \"dedup_config\": {\n            \"drop_duplicates\": true,\n            \"dedup_key\": \"id\",\n            \"dedup_period\": 1036800\n        },\n        \"batch_id\": \"id\"\n    },\n    \"dedup_config\": {\n        \"drop_duplicates\": true,\n        \"dedup_key\": \"ifsc_code\",\n        \"dedup_period\": 1036800\n    },\n    \"data_schema\": {\n        \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n        \"type\": \"object\",\n        \"properties\": {\n            \"ifsc_code\": {\n                \"type\": \"string\",\n                \"arrival_format\": \"text\",\n                \"data_type\": \"string\"\n            },\n            \"bank_name\": {\n                \"type\": \"string\",\n                \"arrival_format\": \"text\",\n                \"data_type\": \"string\"\n            },\n            \"bank_code\": {\n                \"type\": \"string\",\n                \"arrival_format\": \"text\",\n                \"data_type\": \"string\"\n            },\n            \"branch_location\": {\n                \"type\": \"string\",\n                \"arrival_format\": \"text\",\n                \"data_type\": \"string\"\n            }\n        },\n        \"addtionalProperties\": false\n    },\n    \"denorm_config\": {\n        \"redis_db_host\": \"obsrv-redis-master.redis.svc.cluster.local\",\n        \"redis_db_port\": 6379,\n        \"denorm_fields\": []\n    },\n    \"router_config\": {\n        \"topic\": \"bank_profile_dec\"\n    },\n    \"dataset_config\": {\n        \"data_key\": \"ifsc_code\",\n        \"timestamp_key\": \"\",\n        \"exclude_fields\": [],\n        \"entry_topic\": \"dev.masterdata.ingest\",\n        \"redis_db_host\": \"obsrv-redis-master.redis.svc.cluster.local\",\n        \"redis_db_port\": 6379,\n        \"index_data\": true,\n        \"redis_db\": 4\n    },\n    \"status\": \"ACTIVE\",\n    \"created_by\": \"SYSTEM\",\n    \"updated_by\": \"SYSTEM\",\n    \"published_date\": \"2023-11-30 06:47:28.291\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/obsrv/v1/datasets/create"
+					},
+					"response": []
+				},
+				{
+					"name": "ingest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"id\": \"bank_profile_uuid_2\",\n        \"events\":  []\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/obsrv/v1/data/create/bank_profile_dec"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction Dataset",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"transaction_data_dec\",\n    \"dataset_id\": \"transaction_data_dec\",\n    \"type\": \"dataset\",\n    \"name\": \"transaction_data_dec\",\n    \"validation_config\": {\n        \"validate\": true,\n        \"mode\": \"Strict\",\n        \"validation_mode\": \"Strict\"\n    },\n    \"extraction_config\": {\n        \"is_batch_event\": true,\n        \"extraction_key\": \"events\",\n        \"dedup_config\": {\n            \"drop_duplicates\": true,\n            \"dedup_key\": \"id\",\n            \"dedup_period\": 1036800\n        },\n        \"batch_id\": \"id\"\n    },\n    \"dedup_config\": {\n        \"drop_duplicates\": false,\n        \"dedup_key\": \"\",\n        \"dedup_period\": 1036800\n    },\n    \"data_schema\": {\n        \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n        \"type\": \"object\",\n        \"properties\": {\n            \"sender_ifsc_code\": {\n                \"type\": \"string\"\n            },\n            \"sender_account_number\": {\n                \"type\": \"string\"\n            },\n            \"receiver_ifsc_code\": {\n                \"type\": \"string\"\n            },\n            \"receiver_account_number\": {\n                \"type\": \"string\"\n            },\n            \"txn_id\": {\n                \"type\": \"string\"\n            },\n            \"txn_date\": {\n                \"type\": \"string\",\n                \"format\": \"date-time\"\n            },\n            \"txn_type\": {\n                \"type\": \"string\"\n            },\n            \"txn_amount\": {\n                \"type\": \"integer\"\n            },\n            \"txn_status\": {\n                \"type\": \"string\"\n            },\n            \"currency\": {\n                \"type\": \"string\"\n            }\n        },\n        \"addtionalProperties\": false\n    },\n    \"denorm_config\": {\n        \"redis_db_host\": \"obsrv-redis-master.redis.svc.cluster.local\",\n        \"redis_db_port\": 6379,\n        \"denorm_fields\": [\n            {\n                \"denorm_key\": \"sender_ifsc_code\",\n                \"denorm_out_field\": \"sender_bank_details\",\n                \"redis_db\": 4\n            },\n            {\n                \"denorm_key\": \"receiver_ifsc_code\",\n                \"denorm_out_field\": \"receiver_bank_details\",\n                \"redis_db\": 4\n            }\n        ]\n    },\n    \"router_config\": {\n        \"topic\": \"transaction_data_dec\"\n    },\n    \"dataset_config\": {\n        \"data_key\": \"\",\n        \"timestamp_key\": \"txn_date\",\n        \"exclude_fields\": [],\n        \"entry_topic\": \"dev.ingest\",\n        \"redis_db_host\": \"obsrv-redis-master.redis.svc.cluster.local\",\n        \"redis_db_port\": 6379,\n        \"index_data\": true,\n        \"redis_db\": 0\n    },\n    \"status\": \"ACTIVE\",\n    \"created_by\": \"SYSTEM\",\n    \"updated_by\": \"SYSTEM\",\n    \"created_date\": \"2023-11-30 07:37:53.13575\",\n    \"updated_date\": \"2023-11-30 07:37:53.13575\",\n    \"published_date\": \"2023-11-30 07:37:53.13575\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/obsrv/v1/datasets/create"
+					},
+					"response": []
+				},
+				{
+					"name": "ingest batch 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"id\": \"transaction_data_uuid_2\",\n        \"events\": []\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/obsrv/v1/data/create/transaction_data_dec"
+					},
+					"response": []
+				},
+				{
+					"name": "ingest batch 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"id\": \"transaction_data_uuid_3\",\n        \"events\": []\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/obsrv/v1/data/create/transaction_data_dec"
+					},
+					"response": []
+				},
+				{
+					"name": "Datasource create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"transaction_data_dec_transaction_data_dec_day\",\n    \"datasource\": \"transaction_data_dec_day\",\n    \"dataset_id\": \"transaction_data_dec\",\n    \"ingestion_spec\": {\n        \"type\": \"kafka\",\n        \"spec\": {\n            \"dataSchema\": {\n                \"dataSource\": \"transaction_data_dec_day\",\n                \"dimensionsSpec\": {\n                    \"dimensions\": [\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"sender_ifsc_code\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"sender_account_number\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"receiver_ifsc_code\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"receiver_account_number\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"txn_id\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"txn_type\"\n                        },\n                        {\n                            \"type\": \"long\",\n                            \"name\": \"txn_amount\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"txn_status\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"currency\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"sender_bank_details_ifsc_code\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"sender_bank_details_bank_name\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"sender_bank_details_bank_code\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"sender_bank_details_branch_location\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"receiver_bank_details_ifsc_code\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"receiver_bank_details_bank_name\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"receiver_bank_details_bank_code\"\n                        },\n                        {\n                            \"type\": \"string\",\n                            \"name\": \"receiver_bank_details_branch_location\"\n                        }\n                    ]\n                },\n                \"timestampSpec\": {\n                    \"column\": \"txn_date\",\n                    \"format\": \"auto\"\n                },\n                \"metricsSpec\": [],\n                \"granularitySpec\": {\n                    \"type\": \"uniform\",\n                    \"segmentGranularity\": \"DAY\",\n                    \"queryGranularity\": \"none\",\n                    \"rollup\": false\n                }\n            },\n            \"tuningConfig\": {\n                \"type\": \"kafka\",\n                \"maxBytesInMemory\": 134217728,\n                \"maxRowsPerSegment\": 500000,\n                \"logParseExceptions\": true\n            },\n            \"ioConfig\": {\n                \"type\": \"kafka\",\n                \"topic\": \"transaction_data_dec\",\n                \"consumerProperties\": {\n                    \"bootstrap.servers\": \"obsrv-kafka-headless.kafka.svc.cluster.local:9092\"\n                },\n                \"taskCount\": 1,\n                \"replicas\": 1,\n                \"taskDuration\": \"PT1H\",\n                \"useEarliestOffset\": true,\n                \"completionTimeout\": \"PT1H\",\n                \"inputFormat\": {\n                    \"type\": \"json\",\n                    \"flattenSpec\": {\n                        \"useFieldDiscovery\": true,\n                        \"fields\": [\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.sender_ifsc_code\",\n                                \"name\": \"sender_ifsc_code\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.sender_account_number\",\n                                \"name\": \"sender_account_number\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.receiver_ifsc_code\",\n                                \"name\": \"receiver_ifsc_code\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.receiver_account_number\",\n                                \"name\": \"receiver_account_number\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.txn_id\",\n                                \"name\": \"txn_id\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.txn_date\",\n                                \"name\": \"txn_date\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.txn_type\",\n                                \"name\": \"txn_type\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.txn_amount\",\n                                \"name\": \"txn_amount\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.txn_status\",\n                                \"name\": \"txn_status\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.currency\",\n                                \"name\": \"currency\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.sender_bank_details.ifsc_code\",\n                                \"name\": \"sender_bank_details_ifsc_code\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.sender_bank_details.bank_name\",\n                                \"name\": \"sender_bank_details_bank_name\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.sender_bank_details.bank_code\",\n                                \"name\": \"sender_bank_details_bank_code\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.sender_bank_details.branch_location\",\n                                \"name\": \"sender_bank_details_branch_location\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.receiver_bank_details.ifsc_code\",\n                                \"name\": \"receiver_bank_details_ifsc_code\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.receiver_bank_details.bank_name\",\n                                \"name\": \"receiver_bank_details_bank_name\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.receiver_bank_details.bank_code\",\n                                \"name\": \"receiver_bank_details_bank_code\"\n                            },\n                            {\n                                \"type\": \"path\",\n                                \"expr\": \"$.receiver_bank_details.branch_location\",\n                                \"name\": \"receiver_bank_details_branch_location\"\n                            }\n                        ]\n                    },\n                    \"appendToExisting\": false\n                }\n            }\n        }\n    },\n    \"datasource_ref\": \"transaction_data_dec_day\",\n    \"retention_period\": {\n        \"enabled\": \"false\"\n    },\n    \"archival_policy\": {\n        \"enabled\": \"false\"\n    },\n    \"purge_policy\": {\n        \"enabled\": \"false\"\n    },\n    \"backup_config\": {\n        \"enabled\": \"false\"\n    },\n    \"status\": \"ACTIVE\",\n    \"created_by\": \"SYSTEM\",\n    \"updated_by\": \"SYSTEM\",\n    \"created_date\": \"2023-11-30 07:37:53.239937\",\n    \"updated_date\": \"2023-11-30 07:37:53.239937\",\n    \"published_date\": \"2023-11-30 07:37:53.239937\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/obsrv/v1/datasources/create"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dataset Query",
+			"item": [
+				{
+					"name": "query- total amount received",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"querySql\": {\n        \"query\": \"SELECT sum(txn_amount) as \\\"total_amount_received\\\",\\\"receiver_bank_details_ifsc_code\\\" FROM \\\"transaction_data_dec\\\" GROUP BY 2 ORDER BY 1 ASC\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/obsrv/v1/data/sql-query"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
