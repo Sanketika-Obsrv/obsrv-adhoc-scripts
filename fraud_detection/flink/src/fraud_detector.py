@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 
+import yaml
 import redis2
 import requests
 from pyflink.common.serialization import SimpleStringSchema
@@ -9,19 +10,9 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.connectors import FlinkKafkaConsumer, FlinkKafkaProducer
 from pyflink.datastream.functions import RuntimeContext, MapFunction
 
+with open("conf.yaml", "r") as f:
+	conf = yaml.load(f, yaml.FullLoader)
 
-conf = {
-	"kafka": {
-        "brokers": "obsrv-kafka-headless.kafka.svc.cluster.local:9092",
-  		"source_topic": "financial_data_nov",
-  		"sink_topic": "transformed.financial_data_nov"
-  	},
-	"redis": {
-		"host": "obsrv-redis-master.redis.svc.cluster.local",
-		"port": 6379,
-		"db": 3
-	}
-}
 
 class FraudDetector(MapFunction):
 	def open(self, runtime_context: RuntimeContext):
@@ -55,7 +46,7 @@ class FraudDetector(MapFunction):
 					}
 					event["meta"] = metadata
 					requests.post(
-						'https://hooks.slack.com/services/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', data=json.dumps({
+						conf['slack']['webhook'], data=json.dumps({
 							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
 								id=event["txn_id"],\
 								severity=event["meta"]["severity"],
@@ -83,7 +74,7 @@ class FraudDetector(MapFunction):
 						}
 						event["meta"] = metadata
 						requests.post(
-							'https://hooks.slack.com/services/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', data=json.dumps({
+							conf['slack']['webhook'], data=json.dumps({
 								"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
 									id=event["txn_id"],\
 									severity=event["meta"]["severity"],
@@ -108,7 +99,7 @@ class FraudDetector(MapFunction):
 						}
 						event["meta"] = metadata
 						requests.post(
-							'https://hooks.slack.com/services/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', data=json.dumps({
+							conf['slack']['webhook'], data=json.dumps({
 								"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
 									id=event["txn_id"],\
 									severity=event["meta"]["severity"],
@@ -134,7 +125,7 @@ class FraudDetector(MapFunction):
 					}
 					event["meta"] = metadata
 					requests.post(
-						'https://hooks.slack.com/services/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', data=json.dumps({
+						conf['slack']['webhook'], data=json.dumps({
 							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
 								id=event["txn_id"],\
 								severity=event["meta"]["severity"],
@@ -160,7 +151,7 @@ class FraudDetector(MapFunction):
 					}
 					event["meta"] = metadata
 					requests.post(
-						'https://hooks.slack.com/services/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', data=json.dumps({
+						conf['slack']['webhook'], data=json.dumps({
 							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
 								id=event["txn_id"],\
 								severity=event["meta"]["severity"],
@@ -186,7 +177,7 @@ class FraudDetector(MapFunction):
 					}
 					event["meta"] = metadata
 					requests.post(
-						'https://hooks.slack.com/services/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', data=json.dumps({
+						conf['slack']['webhook'], data=json.dumps({
 							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
 								id=event["txn_id"],\
 								severity=event["meta"]["severity"],
