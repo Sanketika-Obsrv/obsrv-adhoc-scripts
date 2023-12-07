@@ -19,6 +19,27 @@ class FraudDetector(MapFunction):
 		self.r = redis2.Redis(host=conf['redis']['host'], port=conf['redis']['port'], db=conf['redis']['db'])
 		self.ctx = runtime_context.get_metrics_group()
 		return super().open(runtime_context)
+	
+	def raise_fraud(self, event, metadata):
+		event["meta"] = metadata
+		requests.post(
+			conf['slack']['webhook'], data=json.dumps({
+				"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
+					id=event["txn_id"],\
+					severity=event["meta"]["severity"],
+					desc=event["meta"]["description"]
+				)
+			}))
+		self.ctx.add_group(
+			"dataset_id", conf["kafka"]["source_topic"]
+		).add_group(
+			"txn_type", "fraud_txn"
+		).add_group(
+			"txn_id",event["txn_id"]
+		).counter("txn_count").inc(1)
+		updatedValue = json.dumps(event, separators=(',', ':'))
+		return updatedValue
+
 
 	def map(self, value):
 		event = json.loads(value)
@@ -44,24 +65,7 @@ class FraudDetector(MapFunction):
 						"severity": "Severe",
 						"description": "Receiver is a suspected mule account."
 					}
-					event["meta"] = metadata
-					requests.post(
-						conf['slack']['webhook'], data=json.dumps({
-							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
-								id=event["txn_id"],\
-								severity=event["meta"]["severity"],
-								desc=event["meta"]["description"]
-							)
-						}))
-					self.ctx.add_group(
-						"dataset_id", conf["kafka"]["source_topic"]
-					).add_group(
-						"txn_type", "fraud_txn"
-					).add_group(
-						"txn_id",event["txn_id"]
-					).counter("txn_count").inc(1)
-					updatedValue = json.dumps(event, separators=(',', ':'))
-					return updatedValue
+					return self.raise_fraud(event, metadata)
 				# If txn amount is higher than the net spend across 3 months
 				elif event["txn_amount"] >= fraud_profile["net_amount_spent"]:
 					latest_txn_date = datetime.fromisoformat(fraud_profile["latest_txn_date"])
@@ -72,24 +76,7 @@ class FraudDetector(MapFunction):
 							"severity": "Severe",
 							"description": "High spend from an dormant amount."
 						}
-						event["meta"] = metadata
-						requests.post(
-							conf['slack']['webhook'], data=json.dumps({
-								"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
-									id=event["txn_id"],\
-									severity=event["meta"]["severity"],
-									desc=event["meta"]["description"]
-								)
-							}))
-						self.ctx.add_group(
-						"dataset_id", conf["kafka"]["source_topic"]
-					).add_group(
-						"txn_type", "fraud_txn"
-					).add_group(
-						"txn_id",event["txn_id"]
-					).counter("txn_count").inc(1)
-						updatedValue = json.dumps(event, separators=(',', ':'))
-						return updatedValue
+						return self.raise_fraud(event, metadata)
 					else:
 						metadata = {
 							"fraud_processed": "True", 
@@ -97,24 +84,7 @@ class FraudDetector(MapFunction):
 							"severity": "Severe",
 							"description": "Transaction amount higher than net spend."
 						}
-						event["meta"] = metadata
-						requests.post(
-							conf['slack']['webhook'], data=json.dumps({
-								"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
-									id=event["txn_id"],\
-									severity=event["meta"]["severity"],
-									desc=event["meta"]["description"]
-								)
-							}))
-						self.ctx.add_group(
-						"dataset_id", conf["kafka"]["source_topic"]
-					).add_group(
-						"txn_type", "fraud_txn"
-					).add_group(
-						"txn_id",event["txn_id"]
-					).counter("txn_count").inc(1)
-						updatedValue = json.dumps(event, separators=(',', ':'))
-						return updatedValue
+						return self.raise_fraud(event, metadata)
 				# if txn amount is higher than 3 std dev of daily avg amount
 				elif event["txn_amount"] >= ((3 * fraud_profile["std_dev_net_amount_spent"]) + fraud_profile["daily_avg_amount_spent"]):
 					metadata = {
@@ -123,24 +93,7 @@ class FraudDetector(MapFunction):
 						"severity": "Medium",
 						"description": "Transaction amount considerably higher than daily average spend."
 					}
-					event["meta"] = metadata
-					requests.post(
-						conf['slack']['webhook'], data=json.dumps({
-							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
-								id=event["txn_id"],\
-								severity=event["meta"]["severity"],
-								desc=event["meta"]["description"]
-							)
-						}))
-					self.ctx.add_group(
-						"dataset_id", conf["kafka"]["source_topic"]
-					).add_group(
-						"txn_type", "fraud_txn"
-					).add_group(
-						"txn_id",event["txn_id"]
-					).counter("txn_count").inc(1)
-					updatedValue = json.dumps(event, separators=(',', ':'))
-					return updatedValue
+					return self.raise_fraud(event, metadata)
 				# If daily avg cashflow is close to 0
 				elif (fraud_profile["daily_avg_cashflow"] > 100000) and (fraud_profile["daily_avg_cashflow"] < -100000):
 					metadata = {
@@ -149,24 +102,7 @@ class FraudDetector(MapFunction):
 						"severity": "Medium",
 						"description": "High transactions yet low cashflow."
 					}
-					event["meta"] = metadata
-					requests.post(
-						conf['slack']['webhook'], data=json.dumps({
-							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
-								id=event["txn_id"],\
-								severity=event["meta"]["severity"],
-								desc=event["meta"]["description"]
-							)
-						}))
-					self.ctx.add_group(
-						"dataset_id", conf["kafka"]["source_topic"]
-					).add_group(
-						"txn_type", "fraud_txn"
-					).add_group(
-						"txn_id",event["txn_id"]
-					).counter("txn_count").inc(1)
-					updatedValue = json.dumps(event, separators=(',', ':'))
-					return updatedValue
+					return self.raise_fraud(event, metadata)
 				# If daily avg transaction count is high
 				elif fraud_profile["daily_avg_transactions"] > 1:
 					metadata = {
@@ -175,24 +111,7 @@ class FraudDetector(MapFunction):
 						"severity": "Low",
 						"description": "High daily avg transactions."
 					}
-					event["meta"] = metadata
-					requests.post(
-						conf['slack']['webhook'], data=json.dumps({
-							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
-								id=event["txn_id"],\
-								severity=event["meta"]["severity"],
-								desc=event["meta"]["description"]
-							)
-						}))
-					self.ctx.add_group(
-						"dataset_id", conf["kafka"]["source_topic"]
-					).add_group(
-						"txn_type", "fraud_txn"
-					).add_group(
-						"txn_id",event["txn_id"]
-					).counter("txn_count").inc(1)
-					updatedValue = json.dumps(event, separators=(',', ':'))
-					return updatedValue
+					return self.raise_fraud(event, metadata)
 			except KeyError:
 				metadata = {
 					"fraud_processed": "False", 
