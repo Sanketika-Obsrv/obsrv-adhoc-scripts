@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 
 import redis2
+import requests
 from pyflink.common.serialization import SimpleStringSchema
 from pyflink.common.typeinfo import Types
 from pyflink.datastream import StreamExecutionEnvironment
@@ -53,6 +54,14 @@ class FraudDetector(MapFunction):
 						"description": "Receiver is a suspected mule account."
 					}
 					event["meta"] = metadata
+					requests.post(
+						'https://hooks.slack.com/services/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', data=json.dumps({
+							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
+								id=event["txn_id"],\
+								severity=event["meta"]["severity"],
+								desc=event["meta"]["description"]
+							)
+						}))
 					self.ctx.add_group(
 						"dataset_id", conf["kafka"]["source_topic"]
 					).add_group(
@@ -73,6 +82,14 @@ class FraudDetector(MapFunction):
 							"description": "High spend from an dormant amount."
 						}
 						event["meta"] = metadata
+						requests.post(
+							'https://hooks.slack.com/services/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', data=json.dumps({
+								"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
+									id=event["txn_id"],\
+									severity=event["meta"]["severity"],
+									desc=event["meta"]["description"]
+								)
+							}))
 						self.ctx.add_group(
 						"dataset_id", conf["kafka"]["source_topic"]
 					).add_group(
@@ -90,6 +107,14 @@ class FraudDetector(MapFunction):
 							"description": "Transaction amount higher than net spend."
 						}
 						event["meta"] = metadata
+						requests.post(
+							'https://hooks.slack.com/services/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', data=json.dumps({
+								"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
+									id=event["txn_id"],\
+									severity=event["meta"]["severity"],
+									desc=event["meta"]["description"]
+								)
+							}))
 						self.ctx.add_group(
 						"dataset_id", conf["kafka"]["source_topic"]
 					).add_group(
@@ -108,6 +133,14 @@ class FraudDetector(MapFunction):
 						"description": "Transaction amount considerably higher than daily average spend."
 					}
 					event["meta"] = metadata
+					requests.post(
+						'https://hooks.slack.com/services/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', data=json.dumps({
+							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
+								id=event["txn_id"],\
+								severity=event["meta"]["severity"],
+								desc=event["meta"]["description"]
+							)
+						}))
 					self.ctx.add_group(
 						"dataset_id", conf["kafka"]["source_topic"]
 					).add_group(
@@ -126,6 +159,14 @@ class FraudDetector(MapFunction):
 						"description": "High transactions yet low cashflow."
 					}
 					event["meta"] = metadata
+					requests.post(
+						'https://hooks.slack.com/services/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', data=json.dumps({
+							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
+								id=event["txn_id"],\
+								severity=event["meta"]["severity"],
+								desc=event["meta"]["description"]
+							)
+						}))
 					self.ctx.add_group(
 						"dataset_id", conf["kafka"]["source_topic"]
 					).add_group(
@@ -144,6 +185,14 @@ class FraudDetector(MapFunction):
 						"description": "High daily avg transactions."
 					}
 					event["meta"] = metadata
+					requests.post(
+						'https://hooks.slack.com/services/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', data=json.dumps({
+							"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
+								id=event["txn_id"],\
+								severity=event["meta"]["severity"],
+								desc=event["meta"]["description"]
+							)
+						}))
 					self.ctx.add_group(
 						"dataset_id", conf["kafka"]["source_topic"]
 					).add_group(
@@ -180,6 +229,7 @@ class FraudDetector(MapFunction):
 				event["meta"] = metadata
 				updatedValue = json.dumps(event, separators=(',', ':'))
 				return updatedValue
+
 
 	def close(self):
 		return super().close()

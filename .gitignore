@@ -4,4 +4,5 @@
 /fraud_detection/flink/src/*.zip
 /fraud_detection/flink/Commands.txt
 /fraud_detection/mock-data-generator/sample-files/*.json
+/fraud_detection/venv/
 env
