@@ -1,7 +1,6 @@
 import json
 from datetime import datetime
 
-import yaml
 import redis2
 import requests
 from pyflink.common.serialization import SimpleStringSchema
@@ -9,10 +8,6 @@ from pyflink.common.typeinfo import Types
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.connectors import FlinkKafkaConsumer, FlinkKafkaProducer
 from pyflink.datastream.functions import RuntimeContext, MapFunction
-
-with open("conf.yaml", "r") as f:
-	conf = yaml.load(f, yaml.FullLoader)
-
 
 class FraudDetector(MapFunction):
 	def open(self, runtime_context: RuntimeContext):
@@ -22,14 +17,20 @@ class FraudDetector(MapFunction):
 	
 	def raise_fraud(self, event, metadata):
 		event["meta"] = metadata
-		requests.post(
-			conf['slack']['webhook'], data=json.dumps({
-				"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
-					id=event["txn_id"],\
-					severity=event["meta"]["severity"],
-					desc=event["meta"]["description"]
-				)
-			}))
+		url = conf['slack']['webhook']
+		headers = {'Content-Type': 'application/json'}
+		payload = {
+			"text": ":warning: *Fraud Transaction Alert*\n> Transaction ID: `{id}`\n> Severity: `{severity}`\n> Description: `{desc}`".format(
+				id=event["txn_id"],\
+				severity=event["meta"]["severity"],
+				desc=event["meta"]["description"]
+			)
+		}
+		response = requests.post(
+			url=url, 
+			headers=headers,
+			json=payload
+		)
 		self.ctx.add_group(
 			"dataset_id", conf["kafka"]["source_topic"]
 		).add_group(
@@ -95,7 +96,7 @@ class FraudDetector(MapFunction):
 					}
 					return self.raise_fraud(event, metadata)
 				# If daily avg cashflow is close to 0
-				elif (fraud_profile["daily_avg_cashflow"] > 100000) and (fraud_profile["daily_avg_cashflow"] < -100000):
+				elif (fraud_profile["daily_avg_cashflow"] < 100000) and (fraud_profile["daily_avg_cashflow"] > -100000):
 					metadata = {
 						"fraud_processed": "True", 
 						"isFraud": "True",
@@ -145,7 +146,9 @@ class FraudDetector(MapFunction):
 		return super().close()
 
 
-def main():
+if __name__ == '__main__':
+	with open("/tmp/conf.json", "r") as f:
+		conf = json.load(f)
 	env = StreamExecutionEnvironment.get_execution_environment()
 	deserialization_schema = SimpleStringSchema()
 	serialization_schema = SimpleStringSchema() 
@@ -160,6 +163,3 @@ def main():
 	ds = env.add_source(kafka_consumer)
 	ds.map(FraudDetector(), output_type=Types.STRING()).add_sink(kafka_sink)
 	env.execute('fraud-detector')
-
-if __name__ == '__main__':
-    main()
