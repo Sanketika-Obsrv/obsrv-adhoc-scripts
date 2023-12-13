@@ -147,8 +147,24 @@ class FraudDetector(MapFunction):
 
 
 if __name__ == '__main__':
-	with open("/tmp/conf.json", "r") as f:
-		conf = json.load(f)
+	conf = {
+		"slack": {
+			"webhook": ""
+		},
+		"kafka": {
+			"brokers": "obsrv-kafka-headless.kafka.svc.cluster.local:9092",
+			"source_topic": "",
+			"sink_topic": "-out"
+		},
+		"redis": {
+			"host": "obsrv-redis-master.redis.svc.cluster.local",
+			"port": 6379,
+			"db": 3
+		}
+	}
+
+	# with open("/tmp/conf.json", "r") as f:
+	# 	conf = json.load(f)
 	env = StreamExecutionEnvironment.get_execution_environment()
 	deserialization_schema = SimpleStringSchema()
 	serialization_schema = SimpleStringSchema() 
