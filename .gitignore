@@ -1,3 +1,5 @@
+data-generation/node_modules/
+data-generation/output/
 /fraud_detection/mock-data-generator/resources/
 /fraud_detection/flink/jars/
 /fraud_detection/flink/src/*.json
