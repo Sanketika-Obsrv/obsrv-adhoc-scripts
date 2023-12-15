@@ -1,0 +1,47 @@
+[
+    {
+        "name": "txn_id",
+        "nullable": false,
+        "type": "string",
+        "format": "############"
+    },
+    {
+        "name": "txn_date",
+        "nullable": false,
+        "type": "timestamp"
+    },
+    {
+        "name": "txn_type",
+        "nullable": false,
+        "type": "string",
+        "format": "?",
+        "default": "PAY",
+        "probability": 70,
+        "enum": ["COLLECT","DEBIT","CREDIT","REVERSAL","REFUND" ]
+    },
+    {
+        "name": "txn_amount",
+        "nullable": false,
+        "type": "integer",
+        "min": 0,
+        "max": 1000001
+    },
+    {
+        "name": "txn_status",
+        "nullable": false,
+        "type": "string",
+        "format": "?",
+        "default": "SUCCESS",
+        "probability": 85,
+        "enum": ["FAILURE","PARTIAL","DEEMED","PENDING"]
+    },
+    {
+        "name": "currency",
+        "nullable": false,
+        "type": "string",
+        "format": "?",
+        "default": "INR",
+        "probability": 90,
+        "enum": ["USD","EUR","GBP"]
+    }
+]
