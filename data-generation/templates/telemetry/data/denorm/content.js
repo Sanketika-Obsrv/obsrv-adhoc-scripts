@@ -29,7 +29,7 @@ const BOOKS = [
 ];
 
 const ETS_GENERATION_DATE_RANGE = {
-    from: "2023-09-18",
+    from: "2024-01-17",
     to: dayjs().format("YYYY-MM-DD"),
 };
 const LANGUAGES = ["Hindi", "English", "Tamil", "Telugu", "Kannada"];

@@ -13,7 +13,15 @@ const config = {
                 "id": faker.datatype.uuid(),
                 "maxscore": faker.datatype.number({ min: 0, max: 100 }),
                 "params": [
-                    generateRandomJSON()
+                    {
+                        "foo": faker.datatype.string(7),
+                        "bar": faker.datatype.string(7),
+                        "bike": faker.datatype.string(7),
+                        "a": faker.datatype.string(7),
+                        "b": faker.datatype.string(7),
+                        "name": faker.datatype.string(7),
+                        "prop": faker.datatype.string(7)
+                    }
                 ],
                 "uri": faker.lorem.word()
             },

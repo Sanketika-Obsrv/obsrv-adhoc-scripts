@@ -11,12 +11,7 @@ const config = {
             "pageid": faker.helpers.arrayElement(PAGE_IDS),
             "uri": faker.helpers.arrayElement(MOCK_URI),
             "duration": faker.datatype.number({ min: 1, max: 60 }),
-            "visits": [{
-                "objid": faker.datatype.uuid(),
-                "objtype": faker.helpers.arrayElement(["Resource", "Course", "TextBook"]),
-                "objver": (faker.datatype.number({ min: 0, max: 1 })).toString(),
-                "index": (faker.datatype.number({ min: 1, max: 2 })),
-            }]
+            "visits": faker.datatype.number({ min: 10, max: 1000 })
         }
     }
 }

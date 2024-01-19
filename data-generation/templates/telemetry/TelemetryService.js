@@ -24,7 +24,7 @@ const ACTOR_IDS = PROPERTY_IDS("user", globalConfig.denormDataSize);
 const CONTENT_IDS = PROPERTY_IDS("content", globalConfig.denormDataSize);
 const DEVICE_IDS = PROPERTY_IDS("device", globalConfig.denormDataSize);
 const ETS_GENERATION_DATE_RANGE = {
-  from: "2023-09-25",
+  from: "2024-01-17",
   to: dayjs().format("YYYY-MM-DD"),
 };
 Array.prototype.sample = function () {
@@ -68,9 +68,10 @@ const TelemetryService = {
     eventEnvelop["@timestamp"] = ts.toISOString();
     // update actor object
     eventEnvelop.actor.type = faker.helpers.arrayElement(ACTOR_TYPE);
+    const actor_id = faker.helpers.arrayElement(ACTOR_IDS);
     if (eventEnvelop.actor.type === "User")
-      eventEnvelop.actor.id = faker.helpers.arrayElement(ACTOR_IDS);
-    else eventEnvelop.actor.id = faker.datatype.uuid();
+      eventEnvelop.actor.id = actor_id;
+    eventEnvelop.actor.id = faker.datatype.uuid();
 
     // Update context object
     eventEnvelop.context.channel = faker.datatype.string(8);
@@ -78,8 +79,8 @@ const TelemetryService = {
     eventEnvelop.context.env = faker.helpers.arrayElement(CONTEXT_ENV);
     eventEnvelop.context.sid = faker.datatype.uuid();
     if (eventEnvelop.actor.type === "User")
-      eventEnvelop.context.uid = faker.helpers.arrayElement(ACTOR_IDS);
-    else eventEnvelop.context.uid = faker.datatype.uuid();
+      eventEnvelop.context.uid = actor_id;
+    eventEnvelop.context.uid = faker.datatype.uuid();
 
     //update context pdata object
     eventEnvelop.context.pdata.pid = faker.helpers.arrayElement(PDATA_PID);
