@@ -11,8 +11,24 @@ const config = {
             "message": faker.helpers.arrayElement(LOG_MESSAGE),
             "pageid": faker.datatype.string(8),
             "params": [
-                generateRandomJSON(),
-                generateRandomJSON()
+                {
+                    "foo": faker.datatype.string(7),
+                    "bar": faker.datatype.string(7),
+                    "bike": faker.datatype.string(7),
+                    "a": faker.datatype.string(7),
+                    "b": faker.datatype.string(7),
+                    "name": faker.datatype.string(7),
+                    "prop": faker.datatype.string(7)
+                },
+                {
+                    "foo": faker.datatype.string(7),
+                    "bar": faker.datatype.string(7),
+                    "bike": faker.datatype.string(7),
+                    "a": faker.datatype.string(7),
+                    "b": faker.datatype.string(7),
+                    "name": faker.datatype.string(7),
+                    "prop": faker.datatype.string(7)
+                },
             ]
         }
     }

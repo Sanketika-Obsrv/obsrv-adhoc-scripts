@@ -4,7 +4,7 @@ const _ = require('lodash');
 const { getEdata } = require('./data/edata');
 
 const { ACTOR_ID, ACTOR_TYPE, CONTEXT_DID, CONTEXT_ENV, OBJECT_IDENTIFIER, OBJECT_TYPE, PDATA_ID, PDATA_PID, PDATA_PLATFORM, SUMMARY_TYPES, SUMMARY_MODES, DUPLICATE_IDS } = require('./data/mock');
-const ETS_GENERATION_DATE_RANGE = { from: "2023-04-01", to: dayjs().format('YYYY-MM-DD') };
+const ETS_GENERATION_DATE_RANGE = { from: "2024-01-17", to: dayjs().format('YYYY-MM-DD') };
 
 Array.prototype.sample = function () {
     return this[Math.floor(Math.random() * this.length)];

@@ -23,8 +23,6 @@ const saveToFileClosure = (events, type) => {
         saveToFileClosure(dialCodeData, "dialCode")();
         saveToFileClosure(deviceData, "device")();
         saveToFileClosure(contentData, "content")();
-        console.log("Tasks Count", promises.length);
-        console.log("Events Count", promises.length * globalConfig.noOfEventsPerBatch);
         console.log(`Successful Batches Count - ${successCounter}`);
         console.log(`Failed Batches Count - ${failedCounter}`);
     }
