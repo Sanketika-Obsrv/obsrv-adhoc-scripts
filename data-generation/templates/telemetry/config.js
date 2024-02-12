@@ -10,8 +10,8 @@ const globalConfig = {
     pushViaApi: false,
     pushViaKafka: true,
     generateInvalidData: false,
-    pushIndividualEventsWithoutMetadata: false,
-    pushIndividualEventsWithMetadata: false
+    pushIndividualEventsWithoutMetadata: false, // Only valid with kafka push, doesn't include batch configuration
+    pushIndividualEventsWithMetadata: false // Only valid with kafka push, includes obsrv_meta as well
 }
 
 module.exports = { globalConfig };
