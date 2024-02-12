@@ -7,15 +7,17 @@ let successCounter = 0;
 let failedCounter = 0;
 let totalBatchesCount = 0;
 
-const saveToFileClosure = (eid, batchSize = globalConfig.noOfEventsPerBatch) => {
+let globalEvents = [];
+const saveToFileClosure = (eid, batchSize = globalConfig.noOfEventsPerBatch, fillCount) => {
     const events = new Array(batchSize).fill(1).map(_ => telemetryService.generateEvents(eid));
-    return fs.writeFileSync(`./output/${eid}-${uuid.v4()}.json`, JSON.stringify(events), 'utf-8');
+    globalEvents = [...globalEvents, ...events];
 }
 
 (async () => {
     const startTime = Date.now();
     console.log(`Start time - ${startTime}`);
     try {
+        console.log(`Total Batches to push - ${globalConfig.totalBatchesToPush}`)
         const ratio = globalConfig.totalBatchesToPush / 16;
         const eidToBatchMapping = {
             impression: ratio,
@@ -39,7 +41,9 @@ const saveToFileClosure = (eid, batchSize = globalConfig.noOfEventsPerBatch) => 
         let tasks = [];
 
         for (const [eid, batchCount] of Object.entries(eidToBatchMapping)) {
-            saveToFileClosure(eid);
+            for (i = 0; i < batchCount; i++) {
+                saveToFileClosure(eid);
+            }
         }
 
         const endTime = Date.now();
@@ -54,6 +58,7 @@ const saveToFileClosure = (eid, batchSize = globalConfig.noOfEventsPerBatch) => 
         console.log(error);
     }
     finally {
+        fs.writeFileSync(`./output/${uuid.v4()}.json`, JSON.stringify(globalEvents), 'utf-8');
         process.exit()
     }
 })()

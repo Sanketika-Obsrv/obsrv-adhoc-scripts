@@ -46,10 +46,52 @@ const kafkaCall = async (message = {}, datasetName = globalConfig.datasetName,) 
     _.set(message, 'syncts', new Date().getTime());
 
     await producer.connect();
-    await producer.send({
-        topic: globalConfig.kafkaTopic,
-        messages: [{ value: JSON.stringify(message) }],
-    }).catch(e => console.error(`[kafka-producer error: ] ${e.message}`, e));
+    if(globalConfig.pushIndividualEventsWithMetadata) {
+        for (event_data of _.get(message, 'events')) {
+            data_id = uuid.v1();
+            ts = new Date().getTime();
+            let final_event = {
+                id: data_id,
+                event: event_data,
+                syncts: ts,
+                dataset: datasetName,
+                obsrv_meta: {
+                    syncts: ts,
+                    processingStartTime: ts,
+                    flags: {},
+                    timespans: {},
+                    error: {},
+                    source:{
+                        meta:{
+                            id: "",
+                            connector_type: "api",
+                            version: "1.0",
+                            entry_source: "api"
+                        },
+                        trace_id: data_id
+                    }
+                }
+            }
+            await producer.send({
+                topic: globalConfig.kafkaTopic,
+                messages: [{ value: JSON.stringify(final_event) }],
+            }).catch(e => console.error(`[kafka-producer error: ] ${e.message}`, e));
+        }
+    }
+    else if(globalConfig.pushIndividualEventsWithoutMetadata) {
+        for (event_data of _.get(message, 'events')) {
+            await producer.send({
+                topic: globalConfig.kafkaTopic,
+                messages: [{ value: JSON.stringify(event_data) }],
+            }).catch(e => console.error(`[kafka-producer error: ] ${e.message}`, e));
+        }
+    }
+    else {
+        await producer.send({
+            topic: globalConfig.kafkaTopic,
+            messages: [{ value: JSON.stringify(message) }],
+        }).catch(e => console.error(`[kafka-producer error: ] ${e.message}`, e));
+    }
 }
 
 const errorTypes = ['unhandledRejection', 'uncaughtException']

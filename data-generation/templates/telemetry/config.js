@@ -7,9 +7,11 @@ const globalConfig = {
     kafkaTopic: 'local.input.topic',
     apiHost: 'http://localhost:3000/', // Include the / at the end
     datasetName: 'telemetry',
-    pushViaApi: true,
-    pushViaKafka: false,
+    pushViaApi: false,
+    pushViaKafka: true,
     generateInvalidData: false,
+    pushIndividualEventsWithoutMetadata: false,
+    pushIndividualEventsWithMetadata: false
 }
 
 module.exports = { globalConfig };
