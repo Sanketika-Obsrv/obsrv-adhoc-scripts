@@ -33,6 +33,12 @@ const ETS_GENERATION_DATE_RANGE = {
     to: dayjs().format("YYYY-MM-DD"),
 };
 const LANGUAGES = ["Hindi", "English", "Tamil", "Telugu", "Kannada"];
+const BOARD = ["CBSE", "ICSE", "State Board"];
+const MEDIUM = ["English", "Hindi", "Tamil", "Telugu", "Kannada"];
+const STATE = ["Karnataka", "Tamil Nadu", "Andhra Pradesh", "Telangana"];
+const DISTRICT = ["Bangalore", "Chennai", "Hyderabad", "Vijayawada"];
+const USER_TYPES = ["creator", "anonymous", "authenticated", "teacher", "student", "admin"];
+
 
 faker.setLocale("en_IND");
 const getContentData = (size) => {
@@ -45,6 +51,7 @@ const getContentData = (size) => {
                     ETS_GENERATION_DATE_RANGE.to
                 )
                 .getTime(),
+            board: BOARD.sample(),
             channel: "012550822176260096119",
             ownershipType: ["createdBy"],
             code: "org.sunbird.kgcdDt",
@@ -67,6 +74,7 @@ const getContentData = (size) => {
                     ETS_GENERATION_DATE_RANGE.to
                 )
                 .toISOString(),
+            medium: [MEDIUM.sample(), MEDIUM.sample()],
             contentEncoding: "gzip",
             contentType: "TextBook",
             dialcodeRequired: ["Yes", "No"].sample(),
@@ -107,6 +115,30 @@ const getContentData = (size) => {
             operationType: ["CREATE", "UPDATE"].sample(),
             nodeGraphId: 215201,
             graphId: "domain",
+            gradelevel: [GRADE_LEVEL.sample(), GRADE_LEVEL.sample()],
+            subject: [SUBJECTS.sample(), SUBJECTS.sample()],
+            derivedlocationdata: {
+                state: STATE.sample(),
+                district: DISTRICT.sample(),
+                from: "012550822176260096119",
+            },
+            collectiondata: {
+                name: "TextBook",
+                content_type: "TextBook",
+                board: BOARD.sample(),
+                medium: [MEDIUM.sample(), MEDIUM.sample()],
+                subject: [SUBJECTS.sample(), SUBJECTS.sample()],
+                gradelevel: [GRADE_LEVEL.sample(), GRADE_LEVEL.sample()],
+            },
+            dialcodedata: {
+                channel: `${faker.random.numeric(20)}`,
+            },
+            userdata: {
+                usertype: USER_TYPES.sample(),
+                usersignintype: ["phone", "email"].sample(),
+                userlogintype: ["phone", "email"].sample(),
+                
+            }
         };
     });
 };
