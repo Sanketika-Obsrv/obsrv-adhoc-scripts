@@ -114,31 +114,7 @@ const getContentData = (size) => {
             requestId: faker.random.alphaNumeric(10),
             operationType: ["CREATE", "UPDATE"].sample(),
             nodeGraphId: 215201,
-            graphId: "domain",
-            gradelevel: [GRADE_LEVEL.sample(), GRADE_LEVEL.sample()],
-            subject: [SUBJECTS.sample(), SUBJECTS.sample()],
-            derivedlocationdata: {
-                state: STATE.sample(),
-                district: DISTRICT.sample(),
-                from: "012550822176260096119",
-            },
-            collectiondata: {
-                name: "TextBook",
-                content_type: "TextBook",
-                board: BOARD.sample(),
-                medium: [MEDIUM.sample(), MEDIUM.sample()],
-                subject: [SUBJECTS.sample(), SUBJECTS.sample()],
-                gradelevel: [GRADE_LEVEL.sample(), GRADE_LEVEL.sample()],
-            },
-            dialcodedata: {
-                channel: `${faker.random.numeric(20)}`,
-            },
-            userdata: {
-                usertype: USER_TYPES.sample(),
-                usersignintype: ["phone", "email"].sample(),
-                userlogintype: ["phone", "email"].sample(),
-                
-            }
+            graphId: "domain"
         };
     });
 };

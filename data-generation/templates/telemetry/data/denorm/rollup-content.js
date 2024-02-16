@@ -23,7 +23,7 @@ const ETS_GENERATION_DATE_RANGE = {
 content_ids = PROPERTY_IDS("content", globalConfig.denormDataSize);
 
 faker.setLocale("en_IND");
-const getRollupContentData = () => {
+const getRollupContentData = (MEDIUMS, GRADES_ARR, SUBJECTS_ARR) => {
     return {
         ets: faker.date
             .between(
@@ -31,13 +31,13 @@ const getRollupContentData = () => {
                 ETS_GENERATION_DATE_RANGE.to
             )
             .getTime(),
-        board: BOARD.sample(),
+        board: BOARD.slice(0, 2).sample(),
         channel: "012550822176260096119",
         ownershipType: ["createdBy"],
         code: "org.sunbird.kgcdDt",
         description: "Enter description for TextBook",
         organisation: ["diksha_ntptest_org"],
-        language: [LANGUAGES.sample()],
+        language: [LANGUAGES.slice(0, 2).sample()],
         mimeType: "application/vnd.ekstep.content-collection",
         mimetype: "application/vnd.ekstep.content-collection",
         idealScreenSize: "normal",
@@ -55,7 +55,7 @@ const getRollupContentData = () => {
                 ETS_GENERATION_DATE_RANGE.to
             )
             .toISOString(),
-        medium: [MEDIUM.sample(), MEDIUM.sample()],
+        medium: MEDIUMS,
         contentEncoding: "gzip",
         contentType: "TextBook",
         dialcodeRequired: ["Yes", "No"].sample(),
@@ -96,8 +96,8 @@ const getRollupContentData = () => {
         operationType: ["CREATE", "UPDATE"].sample(),
         nodeGraphId: 215201,
         graphId: "domain",
-        gradelevel: [GRADE_LEVEL.sample(), GRADE_LEVEL.sample()],
-        subject: [SUBJECTS.sample(), SUBJECTS.sample()],
+        gradelevel: GRADES_ARR,
+        subject: SUBJECTS_ARR,
     };
 };
 
