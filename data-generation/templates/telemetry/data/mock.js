@@ -458,7 +458,115 @@ const SUMMARY_MODES = ["play", "view", ""];
 const SUMMARY_EVENTS_SUMMARY_CE = ["START", "END", "INTERACT", "IMPRESSION"];
 const SUMMARY_EVENTS_SUMMARY = ["CE_START", "CE_END", "CP_INTERACT"];
 const SUMMARY_ENV_SUMMARY = ["content", "domain", "resource", "community"];
+
+const MEDIUM = ["English", "Hindi", "Tamil", "Telugu", "Kannada"];
+const STATE = ["Karnataka", "Tamil Nadu", "Andhra Pradesh", "Telangana"];
+const DISTRICT = ["Bangalore", "Chennai", "Hyderabad", "Vijayawada"];
+const USER_TYPES = [
+    "creator",
+    "anonymous",
+    "authenticated",
+    "teacher",
+    "student",
+    "admin",
+];
+const SUBJECTS = [
+  "English",
+  "Science",
+  "Mathematics",
+  "Social",
+  "History",
+  "Arts",
+  "IRCS",
+  "Finance",
+  "Commerce",
+  "Banking",
+];
+const CLUSTERS = ["CLUSTER1", "CLUSTER2", "CLUSTER3", "CLUSTER4", "CLUSTER5"];
+const SCHOOL_NAMES = [
+    "DPS, MATHURA",
+    "DPS, BANGALORE",
+    "DPS, HYDERABAD",
+    "DPS, MUMBAI",
+    "DPS, DELHI",
+];
+const ORG_NAMES = [
+  "Root Org2",
+  "Root Org3",
+  "Root Org4",
+  "Root Org5",
+  "Root Org1",
+];
+const SCHOOL_BOARDS = ["IGOT-Health", "SSC", "CBSE", "ICSE"];
+const LANGUAGES = ["Hindi", "English", "Tamil", "Telugu", "Kannada"];
+const DENORM_USER_TYPES = [
+  "administrator",
+  "administration",
+  "teacher",
+  "other",
+  "parent",
+];
+const FRAMEWORKS = [
+  "igot_health",
+  "igot_health_1",
+  "igot_health_2",
+  "igot_health_3",
+  "igot_health_4",
+];
+const GRADES = [
+  "Volunteers",
+  "Class 10",
+  "Class 9",
+  "Class 11",
+  "Class 12",
+  "Class 8",
+  "Class 7",
+  "Class 6",
+  "Class 5",
+];
+const USER_SUBTYPES = {
+  administration: "hm",
+  administrator: "crp",
+};
+const GRADE_LEVEL = [
+  "Class 10",
+  "Class 9",
+  "Class 11",
+  "Class 12",
+  "Class 8",
+  "Class 7",
+  "Class 6",
+  "Class 5",
+];
+const BOOKS = [
+  "Mathematics",
+  "Science",
+  "Physics",
+  "Chemistry",
+  "Lab",
+  "H.C. Verma",
+  "Book A",
+  "Book B",
+];
+const BOARD = ["CBSE", "ICSE", "State Board"];
 module.exports = {
+  BOARD,
+  BOOKS,
+  GRADE_LEVEL,
+  USER_SUBTYPES,
+  FRAMEWORKS,
+  GRADES,
+  ORG_NAMES,
+  LANGUAGES,
+  DENORM_USER_TYPES,
+  CLUSTERS,
+  SCHOOL_NAMES,
+  SUBJECTS,
+  SCHOOL_BOARDS,
+  MEDIUM,
+  STATE,
+  DISTRICT,
+  USER_TYPES,
   ACTOR_TYPE,
   ACTOR_ID,
   CONTEXT_DID,

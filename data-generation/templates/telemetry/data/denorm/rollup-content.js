@@ -1,52 +1,26 @@
-const { PROPERTY_IDS } = require("../mock");
+const {
+    PROPERTY_IDS,
+    BOOKS,
+    GRADE_LEVEL,
+    SUBJECTS,
+    BOARD,
+    MEDIUM,
+    LANGUAGES,
+} = require("../mock");
 const { faker } = require("@faker-js/faker");
-const { SUBJECTS } = require("./user");
 const dayjs = require("dayjs");
+const { globalConfig } = require("../../config");
 
 Array.prototype.sample = function () {
     return this[Math.floor(Math.random() * this.length)];
 };
 
-const GRADE_LEVEL = [
-    "Class 10",
-    "Class 9",
-    "Class 11",
-    "Class 12",
-    "Class 8",
-    "Class 7",
-    "Class 6",
-    "Class 5",
-];
-const BOOKS = [
-    "Mathematics",
-    "Science",
-    "Physics",
-    "Chemistry",
-    "Lab",
-    "H.C. Verma",
-    "Book A",
-    "Book B",
-];
-
 const ETS_GENERATION_DATE_RANGE = {
     from: "2024-01-17",
     to: dayjs().format("YYYY-MM-DD"),
 };
-const LANGUAGES = ["Hindi", "English", "Tamil", "Telugu", "Kannada"];
-const BOARD = ["CBSE", "ICSE", "State Board"];
-const MEDIUM = ["English", "Hindi", "Tamil", "Telugu", "Kannada"];
-const STATE = ["Karnataka", "Tamil Nadu", "Andhra Pradesh", "Telangana"];
-const DISTRICT = ["Bangalore", "Chennai", "Hyderabad", "Vijayawada"];
-const USER_TYPES = [
-    "creator",
-    "anonymous",
-    "authenticated",
-    "teacher",
-    "student",
-    "admin",
-];
 
-content_ids = PROPERTY_IDS("content", size);
+content_ids = PROPERTY_IDS("content", globalConfig.denormDataSize);
 
 faker.setLocale("en_IND");
 const getRollupContentData = () => {
@@ -65,6 +39,7 @@ const getRollupContentData = () => {
         organisation: ["diksha_ntptest_org"],
         language: [LANGUAGES.sample()],
         mimeType: "application/vnd.ekstep.content-collection",
+        mimetype: "application/vnd.ekstep.content-collection",
         idealScreenSize: "normal",
         createdOn: faker.date
             .between(
@@ -123,27 +98,6 @@ const getRollupContentData = () => {
         graphId: "domain",
         gradelevel: [GRADE_LEVEL.sample(), GRADE_LEVEL.sample()],
         subject: [SUBJECTS.sample(), SUBJECTS.sample()],
-        derivedlocationdata: {
-            state: STATE.sample(),
-            district: DISTRICT.sample(),
-            from: "012550822176260096119",
-        },
-        collectiondata: {
-            name: "TextBook",
-            content_type: "TextBook",
-            board: BOARD.sample(),
-            medium: [MEDIUM.sample(), MEDIUM.sample()],
-            subject: [SUBJECTS.sample(), SUBJECTS.sample()],
-            gradelevel: [GRADE_LEVEL.sample(), GRADE_LEVEL.sample()],
-        },
-        dialcodedata: {
-            channel: `${faker.random.numeric(20)}`,
-        },
-        userdata: {
-            usertype: USER_TYPES.sample(),
-            usersignintype: ["phone", "email"].sample(),
-            userlogintype: ["phone", "email"].sample(),
-        },
     };
 };
 

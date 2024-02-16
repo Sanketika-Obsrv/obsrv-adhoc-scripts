@@ -14,6 +14,14 @@ const {
   PROPERTY_IDS,
   // ACTOR_IDS,
   DUPLICATE_IDS,
+  CHANNEL_ID,
+  MEDIUM, 
+  DISTRICT, 
+  STATE,
+  USER_TYPES,
+  SUBJECTS,
+  GRADE_LEVEL,
+  BOARD
 } = require("./data/mock");
 const { getDeviceData } = require("./data/denorm/devices");
 const { getUserData } = require("./data/denorm/user");
@@ -96,7 +104,7 @@ const TelemetryRollupService = {
     eventEnvelop.actor.id = faker.datatype.uuid();
 
     // Update context object
-    eventEnvelop.context.channel = faker.datatype.string(8);
+    eventEnvelop.context.channel = CHANNEL_ID.sample();
     eventEnvelop.context.did = DEVICE_IDS.sample();
     eventEnvelop.context.env = faker.helpers.arrayElement(CONTEXT_ENV);
     eventEnvelop.context.sid = faker.datatype.uuid();
@@ -146,7 +154,30 @@ const TelemetryRollupService = {
     eventEnvelop.tags = [faker.datatype.uuid(), faker.datatype.uuid()];
     eventEnvelop = {
         ...eventEnvelop,
-        ...contentData[0]
+        contentdata: {
+          ...contentData
+        },
+        derivedlocationdata: {
+          state: STATE.sample(),
+          district: DISTRICT.sample(),
+          from: "012550822176260096119",
+      },
+      collectiondata: {
+          name: "TextBook",
+          contenttype: "TextBook",
+          board: BOARD.sample(),
+          medium: [MEDIUM.sample(), MEDIUM.sample()],
+          subject: [SUBJECTS.sample(), SUBJECTS.sample()],
+          gradelevel: [GRADE_LEVEL.sample(), GRADE_LEVEL.sample()],
+      },
+      dialcodedata: {
+          channel: `${faker.random.numeric(20)}`,
+      },
+      userdata: {
+          usertype: USER_TYPES.sample(),
+          usersignintype: ["phone", "email"].sample(),
+          userlogintype: ["phone", "email"].sample(),
+      },
     };
 
     return eventEnvelop;
