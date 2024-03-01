@@ -9,7 +9,7 @@ from azure.storage.blob import BlobClient, ContainerClient
 FORMAT = '%(asctime)s %(message)s'
 logging.basicConfig(format=FORMAT, filename='onest_data_transfer.log', encoding='utf-8', level=logging.INFO)
 
-api_url = "placeholder-api-endpoint" # need to update once API ready
+api_url = "http://localhost:9000/data/v2/in/onest-ingest" # need to update with correct topic name
 headers = {
   'Content-Type': 'application/json'
 }
