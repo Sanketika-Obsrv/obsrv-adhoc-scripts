@@ -1,13 +1,12 @@
-import requests
-
-spec = {
-    "type": "kafka",
+{
+    "type": "index_parallel",
     "spec": {
         "dataSchema": {
-            "dataSource": "<DATASOURCE>",
+            "dataSource": "telemetry-data-bm",
             "dimensionsSpec": {
                 "dimensions": [
                     { "type": "string", "name": "eid" },
+                    { "type": "long", "name": "ets" },
                     { "type": "string", "name": "ver" },
                     { "type": "string", "name": "mid" },
                     { "type": "string", "name": "actor_id" },
@@ -207,139 +206,45 @@ spec = {
                     { "type": "array", "name": "edata_pagesummary_timespent" },
                     { "type": "array", "name": "edata_pagesummary_visits" },
                     { "type": "array", "name": "tags" },
-                    { "type": "long", "name": "syncts" },
-                    { "type": "string", "name": "@timestamp" },
-                    { "type": "string", "name": "devicedata_fcm_token" },
-                    { "type": "string", "name": "devicedata_city" },
-                    { "type": "string", "name": "devicedata_device_id" },
-                    { "type": "string", "name": "devicedata_device_spec" },
-                    { "type": "string", "name": "devicedata_state" },
-                    { "type": "string", "name": "devicedata_uaspec_agent" },
-                    { "type": "string", "name": "devicedata_uaspec_ver" },
-                    { "type": "string", "name": "devicedata_uaspec_system" },
-                    { "type": "string", "name": "devicedata_uaspec_raw" },
-                    { "type": "string", "name": "devicedata_country" },
-                    { "type": "string", "name": "devicedata_country_code" },
-                    { "type": "string", "name": "devicedata_producer_id" },
-                    { "type": "long", "name": "devicedata_state_code_custom" },
-                    { "type": "string", "name": "devicedata_state_code" },
-                    { "type": "string", "name": "devicedata_state_custom" },
-                    { "type": "string", "name": "devicedata_district_custom" },
-                    { "type": "long", "name": "devicedata_first_access" },
-                    {
-                        "type": "long",
-                        "name": "devicedata_api_last_updated_on"
-                    },
-                    {
-                        "type": "string",
-                        "name": "devicedata_user_declared_district"
-                    },
-                    {
-                        "type": "string",
-                        "name": "devicedata_user_declared_state"
-                    },
-                    { "type": "long", "name": "contentdata_ets" },
-                    { "type": "string", "name": "contentdata_channel" },
-                    { "type": "array", "name": "contentdata_ownershipType" },
-                    { "type": "string", "name": "contentdata_code" },
-                    { "type": "string", "name": "contentdata_description" },
-                    { "type": "array", "name": "contentdata_organisation" },
-                    { "type": "array", "name": "contentdata_language" },
-                    { "type": "string", "name": "contentdata_mimeType" },
-                    { "type": "string", "name": "contentdata_idealScreenSize" },
-                    { "type": "string", "name": "contentdata_createdOn" },
-                    { "type": "string", "name": "contentdata_appId" },
-                    {
-                        "type": "string",
-                        "name": "contentdata_contentDisposition"
-                    },
-                    { "type": "string", "name": "contentdata_lastUpdatedOn" },
-                    { "type": "string", "name": "contentdata_contentEncoding" },
-                    { "type": "string", "name": "contentdata_contentType" },
-                    {
-                        "type": "string",
-                        "name": "contentdata_dialcodeRequired"
-                    },
-                    { "type": "string", "name": "contentdata_creator" },
-                    { "type": "array", "name": "contentdata_createdFor" },
-                    {
-                        "type": "string",
-                        "name": "contentdata_lastStatusChangedOn"
-                    },
-                    { "type": "array", "name": "contentdata_audience" },
-                    {
-                        "type": "string",
-                        "name": "contentdata_IL_SYS_NODE_TYPE"
-                    },
-                    { "type": "string", "name": "contentdata_visibility" },
-                    { "type": "array", "name": "contentdata_os" },
-                    { "type": "string", "name": "contentdata_consumerId" },
-                    { "type": "string", "name": "contentdata_mediaType" },
-                    { "type": "string", "name": "contentdata_osId" },
-                    { "type": "long", "name": "contentdata_version" },
-                    { "type": "string", "name": "contentdata_versionKey" },
-                    {
-                        "type": "string",
-                        "name": "contentdata_idealScreenDensity"
-                    },
-                    { "type": "string", "name": "contentdata_license" },
-                    { "type": "string", "name": "contentdata_framework" },
-                    { "type": "string", "name": "contentdata_createdBy" },
-                    {
-                        "type": "long",
-                        "name": "contentdata_compatibilityLevel"
-                    },
-                    {
-                        "type": "string",
-                        "name": "contentdata_IL_FUNC_OBJECT_TYPE"
-                    },
-                    { "type": "string", "name": "contentdata_name" },
-                    { "type": "string", "name": "contentdata_IL_UNIQUE_ID" },
-                    { "type": "string", "name": "contentdata_resourceType" },
-                    { "type": "string", "name": "contentdata_status" },
-                    { "type": "string", "name": "contentdata_mid" },
-                    { "type": "string", "name": "contentdata_label" },
-                    { "type": "string", "name": "contentdata_nodeType" },
-                    { "type": "string", "name": "contentdata_userId" },
-                    { "type": "string", "name": "contentdata_objectType" },
-                    { "type": "string", "name": "contentdata_nodeUniqueId" },
-                    { "type": "string", "name": "contentdata_requestId" },
-                    { "type": "string", "name": "contentdata_operationType" },
-                    { "type": "long", "name": "contentdata_nodeGraphId" },
-                    { "type": "string", "name": "contentdata_graphId" }
+                    { "type": "string", "name": "@timestamp" }
                 ]
             },
-            "timestampSpec": { "column": "ets", "format": "auto" },
+            "timestampSpec": { "column": "syncts", "format": "auto" },
             "metricsSpec": [],
             "granularitySpec": {
                 "type": "uniform",
                 "segmentGranularity": "DAY",
                 "queryGranularity": "none",
-                "rollup": False
+                "rollup": false
             },
             "transformSpec": {}
         },
         "tuningConfig": {
-            "type": "kafka",
-            "maxBytesInMemory": 134217728,
-            "maxRowsPerSegment": 5000000,
-            "logParseExceptions": True
+            "type": "index_parallel",
+            "maxRowsPerSegment": 5000000
         },
         "ioConfig": {
-            "type": "kafka",
-            "topic": "<TOPIC>",
-            "consumerProperties": {
-                "bootstrap.servers": "obsrv-kafka-headless.kafka.svc.cluster.local:9092"
+            "type": "index_parallel",
+            "inputSource": {
+                "type": "s3",
+                "objectGlob": "**.json.gz",
+                "prefixes": ["s3://ingestion-data/raw/"],
+                "properties": {
+                    "accessKeyId": "7xSgQhiRnJg3pUzvIiBV",
+                    "secretAccessKey": "4R4n5Hz8vcJLjWvtWAuQSR1tQzwCFMIBFpT26Au3"
+                },
+                "endpointConfig": {
+                    "url": "http://192.168.1.2:9000",
+                    "signingRegion": "ap-south-1"
+                }
             },
             "taskCount": 1,
             "replicas": 1,
-            "taskDuration": "PT1H",
-            "useEarliestOffset": True,
-            "completionTimeout": "PT1H",
+            "useEarliestOffset": true,
             "inputFormat": {
                 "type": "json",
                 "flattenSpec": {
-                    "useFieldDiscovery": True,
+                    "useFieldDiscovery": true,
                     "fields": [
                         { "type": "path", "expr": "$.eid", "name": "eid" },
                         { "type": "path", "expr": "$.ets", "name": "ets" },
@@ -1320,379 +1225,11 @@ spec = {
                             "type": "path",
                             "expr": "$.@timestamp",
                             "name": "@timestamp"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.fcm_token",
-                            "name": "devicedata_fcm_token"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.city",
-                            "name": "devicedata_city"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.device_id",
-                            "name": "devicedata_device_id"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.device_spec",
-                            "name": "devicedata_device_spec"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.state",
-                            "name": "devicedata_state"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.uaspec.agent",
-                            "name": "devicedata_uaspec_agent"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.uaspec.ver",
-                            "name": "devicedata_uaspec_ver"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.uaspec.system",
-                            "name": "devicedata_uaspec_system"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.uaspec.raw",
-                            "name": "devicedata_uaspec_raw"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.country",
-                            "name": "devicedata_country"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.country_code",
-                            "name": "devicedata_country_code"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.producer_id",
-                            "name": "devicedata_producer_id"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.state_code_custom",
-                            "name": "devicedata_state_code_custom"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.state_code",
-                            "name": "devicedata_state_code"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.state_custom",
-                            "name": "devicedata_state_custom"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.district_custom",
-                            "name": "devicedata_district_custom"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.first_access",
-                            "name": "devicedata_first_access"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.api_last_updated_on",
-                            "name": "devicedata_api_last_updated_on"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.user_declared_district",
-                            "name": "devicedata_user_declared_district"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.devicedata.user_declared_state",
-                            "name": "devicedata_user_declared_state"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.ets",
-                            "name": "contentdata_ets"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.channel",
-                            "name": "contentdata_channel"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.ownershipType[*]",
-                            "name": "contentdata_ownershipType"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.code",
-                            "name": "contentdata_code"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.description",
-                            "name": "contentdata_description"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.organisation[*]",
-                            "name": "contentdata_organisation"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.language[*]",
-                            "name": "contentdata_language"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.mimeType",
-                            "name": "contentdata_mimeType"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.idealScreenSize",
-                            "name": "contentdata_idealScreenSize"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.createdOn",
-                            "name": "contentdata_createdOn"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.appId",
-                            "name": "contentdata_appId"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.contentDisposition",
-                            "name": "contentdata_contentDisposition"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.lastUpdatedOn",
-                            "name": "contentdata_lastUpdatedOn"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.contentEncoding",
-                            "name": "contentdata_contentEncoding"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.contentType",
-                            "name": "contentdata_contentType"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.dialcodeRequired",
-                            "name": "contentdata_dialcodeRequired"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.creator",
-                            "name": "contentdata_creator"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.createdFor[*]",
-                            "name": "contentdata_createdFor"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.lastStatusChangedOn",
-                            "name": "contentdata_lastStatusChangedOn"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.audience[*]",
-                            "name": "contentdata_audience"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.IL_SYS_NODE_TYPE",
-                            "name": "contentdata_IL_SYS_NODE_TYPE"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.visibility",
-                            "name": "contentdata_visibility"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.os[*]",
-                            "name": "contentdata_os"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.consumerId",
-                            "name": "contentdata_consumerId"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.mediaType",
-                            "name": "contentdata_mediaType"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.osId",
-                            "name": "contentdata_osId"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.version",
-                            "name": "contentdata_version"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.versionKey",
-                            "name": "contentdata_versionKey"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.idealScreenDensity",
-                            "name": "contentdata_idealScreenDensity"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.license",
-                            "name": "contentdata_license"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.framework",
-                            "name": "contentdata_framework"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.createdBy",
-                            "name": "contentdata_createdBy"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.compatibilityLevel",
-                            "name": "contentdata_compatibilityLevel"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.IL_FUNC_OBJECT_TYPE",
-                            "name": "contentdata_IL_FUNC_OBJECT_TYPE"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.name",
-                            "name": "contentdata_name"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.IL_UNIQUE_ID",
-                            "name": "contentdata_IL_UNIQUE_ID"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.resourceType",
-                            "name": "contentdata_resourceType"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.status",
-                            "name": "contentdata_status"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.mid",
-                            "name": "contentdata_mid"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.label",
-                            "name": "contentdata_label"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.nodeType",
-                            "name": "contentdata_nodeType"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.userId",
-                            "name": "contentdata_userId"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.objectType",
-                            "name": "contentdata_objectType"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.nodeUniqueId",
-                            "name": "contentdata_nodeUniqueId"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.requestId",
-                            "name": "contentdata_requestId"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.operationType",
-                            "name": "contentdata_operationType"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.nodeGraphId",
-                            "name": "contentdata_nodeGraphId"
-                        },
-                        {
-                            "type": "path",
-                            "expr": "$.contentdata.graphId",
-                            "name": "contentdata_graphId"
                         }
                     ]
                 }
             },
-            "appendToExisting": False
+            "appendToExisting": false
         }
     }
 }
-
-DATASOURCES_LIST = {
-    "ingestion-bm-5n-ds9-1": "records-5m-2",
-    "ingestion-bm-5n-ds9-2": "records-5m-2",
-    "ingestion-bm-5n-ds9-3": "records-5m-2",
-    "ingestion-bm-5n-ds9-4": "records-5m-2",
-    "ingestion-bm-5n-ds9-5": "records-5m-2",
-    "ingestion-bm-5n-ds9-6": "records-5m-2",
-    "ingestion-bm-5n-ds9-7": "records-5m-2",
-    "ingestion-bm-5n-ds9-8": "records-5m-2",
-    "ingestion-bm-5n-ds9-9": "records-5m-2",
-    #"ingestion-bm-5n-ds10-10": "records-5m-2",
-}
-DRUID_HOST = "http://10.244.1.28:8888"
-
-if __name__ == "__main__":
-    for datasource, topic in DATASOURCES_LIST.items():
-        spec_copy = spec
-        spec_copy["spec"]["dataSchema"]["dataSource"] = datasource
-        spec_copy["spec"]["ioConfig"]["topic"] = topic
-
-        # Submit ingestion
-        response = requests.post(
-            f"{DRUID_HOST}/druid/indexer/v1/supervisor",
-            json=spec_copy
-        )
-        response.raise_for_status()
-

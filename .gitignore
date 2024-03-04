@@ -10,3 +10,6 @@ data-generation/output/
 env
 obsrv-sample-data
 *.zip
+output
+output-rollup
+
