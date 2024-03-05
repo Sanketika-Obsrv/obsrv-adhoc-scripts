@@ -23,9 +23,9 @@ azure_storage_account_key=os.getenv("AZURE_ACCOUNT_KEY")
 older_files = []
 older_data = Path("logger.log")
 if older_data.exists():
-    df = pd.read_csv(older_data, columns=["file", "status_code", "response_text"])
+    df = pd.read_csv(older_data, names=["file", "status_code", "response_text"])
     df = df[df["status_code"]==200]
-    older_files = df["file"].unique().values.tolist()
+    older_files = df["file"].unique().tolist()
 connection_string = "DefaultEndpointsProtocol=https;AccountName={};AccountKey={};EndpointSuffix=core.windows.net".format(azure_storage_account_name, azure_storage_account_key)
 container_name = "obsrv-onest"
 container = ContainerClient.from_connection_string(conn_str=connection_string, container_name=container_name)
