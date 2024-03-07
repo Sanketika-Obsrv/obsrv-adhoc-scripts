@@ -45,9 +45,9 @@ for blob_ in blob_list:
             event_counter_inner += batch_len    
             response = requests.request("POST", api_url, headers=headers, json=json_data)
             batch_counter += 1
-            logging.info("File %s, Batch id %s, batch size: %s, API response code: %s, API response msg: %s", blob_, response.status_code, response.text)
+            logging.info("File %s, Batch id %s, batch size: %s, API response code: %s, API response msg: %s", blob_, json_data["data"]["id"], batch_len, response.status_code, response.text)
             with open("logger.log", "a+") as f:
-                f.write("{},{},{},{}".format(blob_, json_data["data"]["id"], batch_len, response.status_code))
+                f.writeline("{},{},{},{}".format(blob_, json_data["data"]["id"], batch_len, response.status_code))
             print(blob_, json_data["data"]["id"], batch_len, response.status_code)
         file_counter += 1
         event_counter += event_counter_inner
