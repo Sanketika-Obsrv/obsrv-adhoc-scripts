@@ -8,3 +8,4 @@ data-generation/output/
 /fraud_detection/mock-data-generator/sample-files/*.json
 /fraud_detection/venv/
 env
+saas-data-migration/venv/

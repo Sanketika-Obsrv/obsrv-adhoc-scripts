@@ -1,0 +1,9 @@
+endpoint: http://localhost:3000/network-observability/v1/in/
+dataset: onest-network-telemetry
+azure_storage_account_name: ""
+azure_storage_account_key: ""
+container_name: obsrv-onest
+prefix: telemetry-data/ingest/onest-network-telemetry/
+start_date: 2024-01-11
+end_date: 2024-01-12
+cpus: 12
