@@ -3,7 +3,7 @@ import json
 import yaml
 import logging
 import datetime
-from multiprocessing import Pool
+from multiprocessing import Pool, set_start_method, freeze_support
 
 import requests
 from azure.storage.blob import BlobClient, ContainerClient
@@ -21,6 +21,7 @@ headers = {
 }
 
 def process_blob(blob_):
+    connection_string = "DefaultEndpointsProtocol=https;AccountName={};AccountKey={};EndpointSuffix=core.windows.net".format(config["azure_storage_account_name"], config["azure_storage_account_key"])
     blob = BlobClient.from_connection_string(conn_str=connection_string, container_name=config["container_name"], blob_name=blob_)
     blob_data = blob.download_blob()
     data = gzip.decompress(blob_data.readall())
@@ -35,14 +36,17 @@ def process_blob(blob_):
             f.writelines("{},{},{},{}\n".format(blob_, json_data["data"]["id"], batch_len, response.status_code))
         print(blob_, json_data["data"]["id"], batch_len, response.status_code)
 
-connection_string = "DefaultEndpointsProtocol=https;AccountName={};AccountKey={};EndpointSuffix=core.windows.net".format(config["azure_storage_account_name"], config["azure_storage_account_key"])
-container = ContainerClient.from_connection_string(conn_str=connection_string, container_name=config["container_name"])
-start_date = config["start_date"]
-end_date = config["end_date"]
-while start_date < end_date:
-    blob_list = container.list_blob_names(name_starts_with=config["prefix"] + start_date.strftime("%Y-%m-%d"))
-    with Pool(config["cpus"]) as p:
-        p.map(process_blob, [blob_ for blob_ in blob_list])
-    start_date += datetime.timedelta(1)
-end_ = datetime.datetime.now()
-print("time taken: ", end_-start_)
+if __name__ == '__main__':
+    freeze_support()
+    set_start_method('spawn')
+    connection_string = "DefaultEndpointsProtocol=https;AccountName={};AccountKey={};EndpointSuffix=core.windows.net".format(config["azure_storage_account_name"], config["azure_storage_account_key"])
+    container = ContainerClient.from_connection_string(conn_str=connection_string, container_name=config["container_name"])
+    start_date = config["start_date"]
+    end_date = config["end_date"]
+    while start_date < end_date:
+        blob_list = container.list_blob_names(name_starts_with=config["prefix"] + start_date.strftime("%Y-%m-%d"))
+        with Pool(config["cpus"]) as p:
+            p.map(process_blob, [blob_ for blob_ in blob_list])
+        start_date += datetime.timedelta(1)
+    end_ = datetime.datetime.now()
+    print("time taken: ", end_-start_)
