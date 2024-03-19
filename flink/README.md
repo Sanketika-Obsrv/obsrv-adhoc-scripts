@@ -23,4 +23,4 @@ This helm chart takes the main class name and deploys the connector image on clu
 
 **Example:**
 
-```helm install kafka-connector . -n flink --set-file job_config=./kafka-connector.conf --set job_classname=org.sunbird.obsrv.kafkaconnector.task.KafkaConnectorStreamTask --set namespace=flink
+```helm install kafka-connector . -n flink --set-file job_config=./kafka-connector.conf --set job_classname=org.sunbird.obsrv.kafkaconnector.task.KafkaConnectorStreamTask --set namespace=flink```

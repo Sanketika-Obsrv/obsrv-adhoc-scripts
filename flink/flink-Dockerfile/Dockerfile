@@ -1,12 +1,14 @@
-ARG FILE_PATH
-FROM --platform=linux/x86_64 flink:scala_2.12-java11 as copy-application
-USER flink
-COPY $FILE_PATH /app/
+FROM --platform=linux/amd64 flink:scala_2.12-java11
 
-FROM --platform=linux/x86_64 flink:scala_2.12-java11 as build-connectors-image
-USER flink
-COPY --from=copy-application /app/*.jar $FLINK_HOME/lib/
-COPY --from=copy-application /app/lib/*.jar $FLINK_HOME/lib/
+RUN apt-get update \
+  && apt-get install -y python3.10 python3-pip \  
+  && rm -rf /var/lib/apt/lists/*
+RUN pip install Flask
+RUN pip install boto3
 
+ENV AWS_ACCESS_KEY_ID='AWS_ACCESS_KEY_ID'
+ENV AWS_SECRET_ACCESS_KEY='AWS_SECRET_ACCESS_KEY'
 
+COPY wrapper-api.py /opt/flink/python-files/
 
+ENTRYPOINT [ "python3.10", "/opt/flink/python-files/wrapper-api.py"]
