@@ -1,9 +1,9 @@
 namespace: "namespace"
-imagepullsecrets: ""
+imagePullSecrets: ""
 image:
-  registry: sanketikahub
-  repository: kafka-connector
-  tag: 1.0.2-GA
+  registry: surabhi1510
+  repository: flink-custom-job
+  tag: v1
 serviceMonitor:
   enabled: false
 replicaCount: 1
@@ -178,6 +178,7 @@ flink_conf: |
 
 job_classname: "main-class-name"
 job_config: "job-config" 
+filepath: "filepath"
 
 
 serviceAccount:

@@ -167,6 +167,13 @@ spec:
         - name: flink-config-volume
           mountPath: /opt/flink/conf/log4j-console.properties
           subPath: log4j-console.properties
+        env:
+        - name: FILEPATH
+          value: {{ .Values.filepath}}
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "python3.10 ./python-files/wrapper-api.py"]
 ---
 apiVersion: apps/v1
 kind: Deployment
