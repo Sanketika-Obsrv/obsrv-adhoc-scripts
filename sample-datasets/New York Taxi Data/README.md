@@ -8,10 +8,10 @@ events.zip contains the files each with 1000 events
 
 ```javascript
 {
-  "tripId":"a12d584b-e8ae-475a-91ff-3b284bc6f7fa",
+  "tripID": "c606ab6e-0c1d-4e69-a8db-f0fc05fa9139",
   "VendorID": "1",
-  "tpep_pickup_datetime": "2023-07-10 00:46:40",
-  "tpep_dropoff_datetime": "2023-03-10 00:53:20",
+  "tpep_pickup_datetime": "2023-04-17 00:46:40",
+  "tpep_dropoff_datetime": "2023-04-17 00:53:20",
   "passenger_count": "1",
   "trip_distance": "1.50",
   "RatecodeID": "1",
@@ -19,16 +19,21 @@ events.zip contains the files each with 1000 events
   "PULocationID": "151",
   "DOLocationID": "239",
   "payment_type": "1",
-  "fare_amount": "7",
-  "extra": "0.5",
-  "mta_tax": "0.5",
-  "tip_amount": "1.65",
-  "tolls_amount": "0",
-  "improvement_surcharge": "0.3",
-  "total_amount": "9.95",
-  "congestion_surcharge": ""
+  "primary_passenger": {
+    "email": "Edd.Hodkiewicz@hotmail.com",
+    "mobile": "1-535-298-9814 x3933"
+  },
+  "fare_details": {
+    "fare_amount": "7",
+    "extra": "0.5",
+    "mta_tax": "0.5",
+    "tip_amount": "1.65",
+    "tolls_amount": "0",
+    "improvement_surcharge": "0.3",
+    "total_amount": "9.95",
+    "congestion_surcharge": ""
+  }
 }
-
 ```
 
 ### Transformations
