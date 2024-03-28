@@ -7,13 +7,11 @@ from urllib.parse import urlparse
 
 def unzip():
     try:
-        # url = "https://custom-jobs.s3.us-east-2.amazonaws.com/application.zip"
         url = os.environ.get("FILEPATH")
         parsed_url = urlparse(url)
         bucket=parsed_url.netloc.split('.')[0]
         file=parsed_url.path.lstrip('/')
         print("Bucket: ",bucket," File: ",file)
-        # session = boto3.Session(profile_name='your_profile_name')
         resource = boto3.resource('s3', region_name='us-east-2')
         obj = resource.Object(bucket_name=bucket, key=file)
         buffer = BytesIO(obj.get()["Body"].read()) 
