@@ -6,9 +6,4 @@ RUN apt-get update \
 # RUN pip install Flask
 RUN pip install boto3
 
-ENV AWS_ACCESS_KEY_ID='AWS_ACCESS_KEY_ID'
-ENV AWS_SECRET_ACCESS_KEY='AWS_SECRET_ACCESS_KEY'
-
 COPY wrapper-api.py /opt/flink/python-files/
-
-# ENTRYPOINT [ "python3.10", "/opt/flink/python-files/wrapper-api.py"]

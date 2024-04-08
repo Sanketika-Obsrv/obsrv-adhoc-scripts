@@ -92,8 +92,8 @@ diagnosticMode:
 ##
 image:
   registry: docker.io
-  repository: surabhi1510/masterdata-indexer
-  tag: v1.0.4
+  repository: surabhi1510/spark-custom-job
+  tag: v1
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -287,6 +287,7 @@ master:
           /opt/bitnami/livy/bin/livy-server start
           /opt/bitnami/spark/sbin/start-history-server.sh
           /opt/bitnami/spark/conf/custom-init.sh
+          python3 /opt/bitnami/spark/python-files/wrapper-api.py
   ## @param master.extraVolumes Optionally specify extra list of additional volumes for the master pod(s)
   ##
   extraVolumes: []
@@ -1077,13 +1078,14 @@ persistence:
     storageClassName: standard
     storage:
       size: 2Gi
+
+filepath:
+jobclassname: 
 appdata:
-  job-config: 
+  jobconfig:
     conf: |+
 
-  job-classname: 
-  
-  spark-defaults:
+  sparkdefaults:
     conf: |+
       spark.master spark://spark-master-svc:7077
       spark.ui.prometheus.enabled true

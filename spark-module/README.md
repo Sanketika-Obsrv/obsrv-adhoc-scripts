@@ -23,4 +23,4 @@ This helm chart takes the main class name and deploys the connector image on clu
 
 **Example:**
 
-```helm install spark . -n spark --set-file job_config=./masterdata-indexer.conf --set job_classname=org.sunbird.obsrv.dataproducts.task.MasterDataIndexer --set namespace=spark
+```helm install spark . -n spark --set-file job_config=./masterdata-indexer.conf --set job_classname=org.sunbird.obsrv.dataproducts.task.MasterDataIndexer --set namespace=spark```
