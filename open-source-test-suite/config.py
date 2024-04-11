@@ -1,11 +1,13 @@
-API_HOST = "http://localhost:3000"
-DRUID_HOST = "http://localhost:8888"
+API_HOST = "http://192.168.49.2:30500"
+DRUID_HOST = "http://192.168.49.2:30503"
 
 ROUTES = {
-    "CREATE_DATASETS": "/v1/datasets",
-    "LIST_DATASETS": "/v1/datasets/list",
-    "CREATE_DATASOURCES": "/v1/datasources",
-    "LIST_DATASOURCES": "/v1/datasources/list",
-    "PUSH_DATA": "/v1/data",
+    "CREATE_DATASETS": "/datasets/v1/create",
+    "LIST_DATASETS": "/datasets/v1/list",
+    "CREATE_DATASOURCES": "/datasources/v1/create",
+    "LIST_DATASOURCES": "/datasources/v1/list",
+    "PUSH_DATA": "/data/v1/in",
     "SUBMIT_INGESTION": "/druid/indexer/v1/supervisor"
 }
+
+ENV = "dev"

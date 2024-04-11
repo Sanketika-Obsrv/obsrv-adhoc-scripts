@@ -53,20 +53,23 @@ def dataset_defaults(
             "index_data": True,
             "redis_db": 3 if dataset_type == "master-dataset" else 0,
         },
-        "tags": None,
+        "tags": [],
         "data_version": None,
         "status": "Live",
         "created_by": "SYSTEM",
         "updated_by": "SYSTEM",
-        "created_date": datetime.now(),
-        "updated_date": datetime.now(),
-        "published_date": datetime.now(),
+        "created_date": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+        "updated_date": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+        "published_date": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
     }
 
 
 def datasource_defaults(dataset_id, ingestion_spec, ts_key):
     ingestion_spec["spec"]["dataSchema"]["dataSource"] = dataset_id + ".1_DAY"
-    ingestion_spec["spec"]["dataSchema"]["timestampSpec"] = ts_key
+    ingestion_spec["spec"]["dataSchema"]["timestampSpec"] = {
+        "format": "auto",
+        "column": ts_key
+    }
     ingestion_spec["spec"]["ioConfig"]["topic"] = dataset_id
     return {
         "id": dataset_id + ".1_DAY",
@@ -81,8 +84,8 @@ def datasource_defaults(dataset_id, ingestion_spec, ts_key):
         "status": "Live",
         "created_by": "SYSTEM",
         "updated_by": "SYSTEM",
-        "created_date": datetime.now(),
-        "updated_date": datetime.now(),
-        "published_date": datetime.now(),
+        "created_date": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+        "updated_date": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+        "published_date": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         "metadata": {"aggregated": False},
     }

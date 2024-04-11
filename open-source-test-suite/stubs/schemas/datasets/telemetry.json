@@ -738,7 +738,7 @@
                 "type": "kafka",
                 "topic": "telemetry-data",
                 "consumerProperties": {
-                    "bootstrap.servers": "kafka-headless.kafka.svc:9092"
+                    "bootstrap.servers": "obsrv-kafka-headless.kafka.svc:9092"
                 },
                 "taskCount": 1,
                 "replicas": 1,

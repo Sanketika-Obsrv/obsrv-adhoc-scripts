@@ -5,6 +5,7 @@ import handler
 import subprocess
 import re
 import time
+from config import ENV
 
 cwd = os.getcwd()
 rootLogger = logging.getLogger()
@@ -33,32 +34,32 @@ def find_pods_and_delete():
 def init():
     rootLogger.info("Initializing...")
     try:
-        datasetHandler = handler.DatasetHandler()
+        datasetHandler = handler.DatasetHandler(ENV)
         datasourceHandler = handler.DatasourceHandler()
         ingestionHandler = handler.IngestionHandler()
         rootLogger.info(f"Pushing data for datasets")
         find_pods_and_delete()
         time.sleep(2)
         print(f"Pushing data for Telemetry devices events")
-        datasets_samples = os.listdir("stubs/sample-data/datasets")
-        for dataset in datasets_samples:
-            with open(f"stubs/sample-data/datasets/{dataset}", "r") as f:
-                datasetData = json.load(f)
-                for x in datasetData:
-                    x["ets"] = int(time.time())
-            datasetHandler.push_data(dataset_id=datasetData["dataset_id"], eventsArray=datasetData)
         master_datasets_samples = os.listdir("stubs/sample-data/master-datasets")
         for master_dataset in master_datasets_samples:
             with open(f"stubs/sample-data/master-datasets/{master_dataset}", "r") as f:
                 masterDatasetData = json.load(f)
                 for x in masterDatasetData:
                     x["api_last_updated_on"] = int(time.time())
-            datasetHandler.push_data(dataset_id=masterDatasetData["dataset_id"], eventsArray=masterDatasetData)
+            datasetHandler.push_data(dataset_id=masterDatasetData, eventsArray=masterDatasetData)
+        datasets_samples = os.listdir("stubs/sample-data/datasets")
+        for dataset in datasets_samples:
+            with open(f"stubs/sample-data/datasets/{dataset}", "r") as f:
+                datasetData = json.load(f)
+                for x in datasetData:
+                    x["ets"] = int(time.time())
+            datasetHandler.push_data(dataset_id=dataset, eventsArray=datasetData)
         rootLogger.info("Datasets have been created and data push was successful.")
         print("Data has been pushed for querying")
-    except:
-        print("Error occured, exiting...")
-        rootLogger.info("Error occured...")
+    except Exception as e:
+        rootLogger.exception(e)
+        rootLogger.error("Error occured, exiting...")
         exit()
 
 if __name__ == "__main__":

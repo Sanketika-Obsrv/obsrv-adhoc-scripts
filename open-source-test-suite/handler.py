@@ -1,6 +1,6 @@
 import config
 import requests
-from resources import dataset_defaults, datasource_defaults
+from resources.defaults import dataset_defaults, datasource_defaults
 from app import rootLogger
 import uuid
 import os
@@ -81,6 +81,7 @@ class DatasetHandler():
 
 class DatasourceHandler():
     def __init__(self) -> None:
+        self.datasets_schemas_path = "stubs/schemas/datasets"
         print("Creating datasource...")
         self.create_datasource()
         rootLogger.info("Successfully created datasource for telemetry dataset...")
@@ -118,6 +119,7 @@ class DatasourceHandler():
 
 class IngestionHandler():
     def __init__(self) -> None:
+        self.datasets_schemas_path = "stubs/schemas/datasets"
         self.submit_dataset_ingestion()
     
     def submit_dataset_ingestion(self):
