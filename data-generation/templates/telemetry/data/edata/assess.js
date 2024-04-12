@@ -11,7 +11,7 @@ const config = {
                 "desc": faker.lorem.words(),
                 "exlength": faker.datatype.number({ min: 0, max: 100 }),
                 "id": faker.datatype.uuid(),
-                "maxscore": faker.datatype.number({ min: 0, max: 100 }),
+                "maxscore": faker.datatype.number({ min: 10, max: 100 }),
                 "params": [
                     {
                         "foo": faker.datatype.string(7),

@@ -1,0 +1,97 @@
+{
+    "id": "telemetry-devices",
+    "data_key": "device_id",
+    "ts_key": "api_last_updated_on",
+    "dataset_type": "master-dataset",
+    "denorm_config": [],
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "fcm_token": {
+                "type": "string"
+            },
+            "city": {
+                "type": "string"
+            },
+            "device_id": {
+                "type": "string"
+            },
+            "device_spec": {
+                "type": "string"
+            },
+            "state": {
+                "type": "string"
+            },
+            "uaspec": {
+                "type": "object",
+                "properties": {
+                    "agent": {
+                        "type": "string"
+                    },
+                    "ver": {
+                        "type": "string"
+                    },
+                    "system": {
+                        "type": "string"
+                    },
+                    "raw": {
+                        "type": "string"
+                    }
+                }
+            },
+            "country": {
+                "type": "string"
+            },
+            "country_code": {
+                "type": "string"
+            },
+            "producer_id": {
+                "type": "string"
+            },
+            "state_code_custom": {
+                "type": "integer"
+            },
+            "state_code": {
+                "type": "string"
+            },
+            "state_custom": {
+                "type": "string"
+            },
+            "district_custom": {
+                "type": "string"
+            },
+            "first_access": {
+                "type": "integer",
+                "format": "date-time",
+                "suggestions": [
+                    {
+                        "message": "The Property 'first_access' appears to be 'date-time' format type.",
+                        "advice": "The System can index all data on this column",
+                        "resolutionType": "INDEX",
+                        "severity": "LOW"
+                    }
+                ]
+            },
+            "api_last_updated_on": {
+                "type": "integer",
+                "format": "date-time",
+                "suggestions": [
+                    {
+                        "message": "The Property 'api_last_updated_on' appears to be 'date-time' format type.",
+                        "advice": "The System can index all data on this column",
+                        "resolutionType": "INDEX",
+                        "severity": "LOW"
+                    }
+                ]
+            },
+            "user_declared_district": {
+                "type": "string"
+            },
+            "user_declared_state": {
+                "type": "string"
+            }
+        },
+        "required": ["first_access", "api_last_updated_on", "device_id"]
+    }    
+}

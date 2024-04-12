@@ -1,67 +1,20 @@
-const { PROPERTY_IDS } = require("../mock");
+const {
+    PROPERTY_IDS,
+    USER_TYPES,
+    CLUSTERS,
+    SCHOOL_NAMES,
+    SCHOOL_BOARDS,
+    USER_SUBTYPES,
+    SUBJECTS,
+    LANGUAGES,
+    GRADES,
+    FRAMEWORKS,
+    ORG_NAMES,
+} = require("../mock");
 const { faker } = require("@faker-js/faker");
 
 Array.prototype.sample = function () {
     return this[Math.floor(Math.random() * this.length)];
-};
-
-const SUBJECTS = [
-    "English",
-    "Science",
-    "Mathematics",
-    "Social",
-    "History",
-    "Arts",
-    "IRCS",
-    "Finance",
-    "Commerce",
-    "Banking",
-];
-const CLUSTERS = ["CLUSTER1", "CLUSTER2", "CLUSTER3", "CLUSTER4", "CLUSTER5"];
-const SCHOOL_NAMES = [
-    "DPS, MATHURA",
-    "DPS, BANGALORE",
-    "DPS, HYDERABAD",
-    "DPS, MUMBAI",
-    "DPS, DELHI",
-];
-const ORG_NAMES = [
-    "Root Org2",
-    "Root Org3",
-    "Root Org4",
-    "Root Org5",
-    "Root Org1",
-];
-const BOARDS = ["IGOT-Health", "SSC", "CBSE", "ICSE"];
-const LANGUAGES = ["Hindi", "English", "Tamil", "Telugu", "Kannada"];
-const USER_TYPES = [
-    "administrator",
-    "administration",
-    "teacher",
-    "other",
-    "parent",
-];
-const FRAMEWORKS = [
-    "igot_health",
-    "igot_health_1",
-    "igot_health_2",
-    "igot_health_3",
-    "igot_health_4",
-];
-const GRADES = [
-    "Volunteers",
-    "Class 10",
-    "Class 9",
-    "Class 11",
-    "Class 12",
-    "Class 8",
-    "Class 7",
-    "Class 6",
-    "Class 5",
-];
-const USER_SUBTYPES = {
-    administration: "hm",
-    administrator: "crp",
 };
 
 faker.setLocale("en_IND");
@@ -87,7 +40,7 @@ const getUserData = (size) => {
             usersubtype: `${userTypes
                 .map((item) => USER_SUBTYPES[item])
                 .join(",")}`,
-            board: BOARDS.sample(),
+            board: SCHOOL_BOARDS.sample(),
             rootorgid: `${faker.random.numeric(19)}`,
             orgname: ORG_NAMES.sample(),
             subject: [SUBJECTS.sample()],

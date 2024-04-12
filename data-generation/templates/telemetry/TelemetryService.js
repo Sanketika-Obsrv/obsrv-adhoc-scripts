@@ -24,8 +24,8 @@ const ACTOR_IDS = PROPERTY_IDS("user", globalConfig.denormDataSize);
 const CONTENT_IDS = PROPERTY_IDS("content", globalConfig.denormDataSize);
 const DEVICE_IDS = PROPERTY_IDS("device", globalConfig.denormDataSize);
 const ETS_GENERATION_DATE_RANGE = {
-  from: "2024-01-17",
-  to: dayjs().format("YYYY-MM-DD"),
+  from: "2024-02-01T00:00:00.000Z",
+  to: `${dayjs().format("YYYY-MM-DD")}T23:59:59.000Z`,
 };
 Array.prototype.sample = function () {
   return this[Math.floor(Math.random() * this.length)];
