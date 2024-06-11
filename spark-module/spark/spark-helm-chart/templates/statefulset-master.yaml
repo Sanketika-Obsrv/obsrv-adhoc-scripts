@@ -247,6 +247,8 @@ spec:
               mountPath: /docker-entrypoint-initdb.d/init-scripts-secret
             {{- end }}
           env:
+            - name: RUNTIME
+              value: "spark"
             - name: FILEPATH
               value: {{ .Values.filepath}}
             - name: AWS_ACCESS_KEY_ID

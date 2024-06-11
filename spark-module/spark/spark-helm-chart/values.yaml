@@ -92,8 +92,8 @@ diagnosticMode:
 ##
 image:
   registry: docker.io
-  repository: surabhi1510/spark-custom-job
-  tag: v1
+  repository: surabhi1510/spark-base-image
+  tag: 1.1
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -1060,22 +1060,22 @@ persistence:
   enabled: true
   masterTmp:
     name: spark-master-tmp
-    storageClassName: standard
+    storageClassName: local-path
     storage:
       size: 2Gi
   workerTmp:
     name: spark-worker-tmp
-    storageClassName: standard
+    storageClassName: local-path
     storage:
       size: 2Gi
   masterMetadata:
     name: spark-master-metadata
-    storageClassName: standard
+    storageClassName: local-path
     storage:
       size: 2Gi
   workerMetadata:
     name: spark-worker-metadata
-    storageClassName: standard
+    storageClassName: local-path
     storage:
       size: 2Gi
 
