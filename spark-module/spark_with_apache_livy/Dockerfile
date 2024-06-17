@@ -5,10 +5,10 @@ ENV LIVY_HOME=/opt/bitnami/livy
 
 # install apache livy server
 RUN install_packages unzip curl\
-    && curl "https://downloads.apache.org/incubator/livy/0.7.1-incubating/apache-livy-0.7.1-incubating-bin.zip" -o "apache-livy-0.7.1-incubating-bin.zip" \
-    && unzip "apache-livy-0.7.1-incubating-bin.zip" \
-    && rm -rf "apache-livy-0.7.1-incubating-bin.zip" \
-    && mv "apache-livy-0.7.1-incubating-bin" $LIVY_HOME \
+    && curl "https://archive.apache.org/dist/incubator/livy/0.8.0-incubating/apache-livy-0.8.0-incubating_2.12-bin.zip" -o "apache-livy-0.8.0-incubating_2.12-bin.zip" \
+    && unzip "apache-livy-0.8.0-incubating_2.12-bin.zip" \
+    && rm -rf "apache-livy-0.8.0-incubating_2.12-bin.zip" \
+    && mv "apache-livy-0.8.0-incubating_2.12-bin" $LIVY_HOME \
     && mkdir $LIVY_HOME/logs \
     && mkdir /tmp/spark-events \
     && chown -R 1001:1001 $LIVY_HOME
