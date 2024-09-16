@@ -1,3 +1,4 @@
+__MACOSX
 data-generation/node_modules/
 data-generation/output/
 /fraud_detection/mock-data-generator/resources/
@@ -12,4 +13,5 @@ obsrv-sample-data
 *.zip
 output
 output-rollup
-
+sample-datasets/New York Taxi Data/events
+node_modules
